@@ -67,7 +67,7 @@ const SingleMaintenancePage = async ({
                     table="maintenance"
                     type="update"
                     data={{
-                      id: 1,
+                      id: "1",
                       recordID: "005",
                       deviceSerialNumber: "125487",
                       performedById: "196587",

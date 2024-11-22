@@ -162,38 +162,7 @@ const SingleOfferPage = async ({
                 </span>
               </div>
             </div>
-            {/* CARD */}
-            {/* <div className="bg-lamaPurpleLight p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]"> */}
-            {/* <div className="bg-lamaPurpleLight p-4 rounded-md w-full xl:w-2/5 flex flex-col gap-4">
 
-              <Image
-                src="/singleBranch.png"
-                alt=""
-                width={24}
-                height={24}
-                className="w-6 h-6"
-              />
-              <div className="">
-                <h1 className="text-md font-semibold">Teklif İletilen Firma</h1>
-                <span className="text-sm text-gray-400">Uzay Mühendislik A.Ş.</span>
-              </div>
-            </div> */}
-            {/* CARD */}
-            {/* <div className="bg-lamaSkyLight p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]"> */}
-            {/* <div className="bg-lamaPurpleLight p-4 rounded-md w-full xl:w-2/5 flex flex-col gap-4">
-
-              <Image
-                src="/singleLesson.png"
-                alt=""
-                width={24}
-                height={24}
-                className="w-6 h-6"
-              />
-              <div className="">
-                <h1 className="text-md font-semibold">Teklif Tarihi</h1>
-                <span className="text-sm text-gray-400">10/12/2024</span>
-              </div>
-            </div> */}
             {/* CARD */}
             <div className="bg-lamaYellow p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[100%]">
               {/* <div className="bg-lamaPurpleLight p-4 rounded-md w-full xl:w-2/5 flex flex-col gap-4"> */}

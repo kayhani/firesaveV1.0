@@ -56,7 +56,7 @@ const SingleUserPage = async ({
                     table="user"
                     type="update"
                     data={{
-                      id: 1,
+                      id: "1",
                       userId: "1234567890",
                       userName: "Fırat Salmanoğlu",
                       password: "12345678",

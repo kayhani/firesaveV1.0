@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+import { NextResponse } from "next/server";
 
 import {
   publicRoutes,
@@ -11,7 +12,7 @@ import {
 
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) =>  {
+export default async function middleware(req: any) {
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -20,23 +21,23 @@ export default auth((req) =>  {
 
 
     if(isApiAuthRoute) {
-      return null;
+      return NextResponse.next();
     };
 
     if(isAuthRoute) {
       if(isLoggedIn){
         return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
       }
-      return null;
+      return NextResponse.next();;
     };
 
     if(!isLoggedIn && !isPublicRoute) {
       return Response.redirect(new URL("/login", nextUrl));
     }
 
-    return null;
+    return NextResponse.next();
 
-});
+};
 
 export const config = {
     matcher: [
@@ -48,56 +49,3 @@ export const config = {
       '/(api|trpc)(.*)',
     ],
   }
-
-// export const config = {
-//     matcher: [
-//       /*
-//        * Match all request paths except for the ones starting with:
-//        * - api (API routes)
-//        * - _next/static (static files)
-//        * - _next/image (image optimization files)
-//        * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-//        */
-//       {
-//         source:
-//           '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-//         missing: [
-//           { type: 'header', key: 'next-router-prefetch' },
-//           { type: 'header', key: 'purpose', value: 'prefetch' },
-//         ],
-//       },
-   
-//       {
-//         source:
-//           '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-//         has: [
-//           { type: 'header', key: 'next-router-prefetch' },
-//           { type: 'header', key: 'purpose', value: 'prefetch' },
-//         ],
-//       },
-   
-//       {
-//         source:
-//           '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-//         has: [{ type: 'header', key: 'x-present' }],
-//         missing: [{ type: 'header', key: 'x-missing', value: 'prefetch' }],
-//       },
-//     ],
-//   }
-
-
-
-
-
-// export const config = {
-//     matcher: [
-//       /*
-//        * Match all request paths except for the ones starting with:
-//        * - api (API routes)
-//        * - _next/static (static files)
-//        * - _next/image (image optimization files)
-//        * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-//        */
-//       '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-//     ],
-//   }
