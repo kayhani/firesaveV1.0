@@ -5,74 +5,71 @@ import TableSearch from "@/components/TableSearch";
 import { role, offersData } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import {  PaymentTermTypes,
-          Services,
-          Users,
-          Institutions,
-          OfferCards, 
-          Prisma 
-        } from "@prisma/client";
+import {
+  PaymentTermTypes,
+  Services,
+  Users,
+  Institutions,
+  OfferCards,
+  Prisma,
+} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
+type OfferList = OfferCards & { paymentTerm: PaymentTermTypes } & {
+  service: Services;
+} & { creator: Users } & { creatorIns: Institutions } & { recipient: Users } & {
+  recipientIns: Institutions;
+};
 
-type OfferList = OfferCards & 
-                { paymentTerm: PaymentTermTypes } & 
-                { service: Services } & 
-                { creator: Users } & 
-                { creatorIns: Institutions } & 
-                { recipient: Users } &
-                { recipientIns: Institutions }
+const columns = [
+  {
+    header: "Teklif ID",
+    accessor: "id",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Teklif Veren",
+    accessor: "info",
+  },
 
-const columns =[
-    {
-        header:"Teklif ID", 
-        accessor:"id",
-        className: "hidden md:table-cell",
-    },
-    {
-        header:"Teklif Veren", 
-        accessor:"info",
-    },
-   
-    {
-        header:"Teklif Tarihi", 
-        accessor:"offerDate",
-        className: "hidden md:table-cell",
-    },
-    {
-      header:"Müşteri", 
-      accessor:"info",
-      className: "hidden md:table-cell"
-    },
-    // {
-    //     header:"Geçerlilik Tarihi", 
-    //     accessor:"expiryDate",
-    //     className: "hidden md:table-cell",
-    // },
-    // {
-    //   header:"Teklif İçeriği", 
-    //   accessor:"servicesOffered",
-    //   className: "hidden md:table-cell",
-    // },
-    {
-        header:"Teklif Tutarı", 
-        accessor:"amount",
-        className: "hidden md:table-cell",
-    },
-    
-    {
-        header:"Durumu", 
-        accessor:"status",
-        className: "hidden md:table-cell",
-    },
+  {
+    header: "Teklif Tarihi",
+    accessor: "offerDate",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Müşteri",
+    accessor: "info",
+    className: "hidden md:table-cell",
+  },
+  // {
+  //     header:"Geçerlilik Tarihi",
+  //     accessor:"expiryDate",
+  //     className: "hidden md:table-cell",
+  // },
+  // {
+  //   header:"Teklif İçeriği",
+  //   accessor:"servicesOffered",
+  //   className: "hidden md:table-cell",
+  // },
+  {
+    header: "Teklif Tutarı",
+    accessor: "amount",
+    className: "hidden md:table-cell",
+  },
 
-    {
-      header:"Eylemler", 
-      accessor:"action",
-      className: "hidden md:table-cell",
-    },
-    
+  {
+    header: "Durumu",
+    accessor: "status",
+    className: "hidden md:table-cell",
+  },
+
+  {
+    header: "Eylemler",
+    accessor: "action",
+    className: "hidden md:table-cell",
+  },
 ];
 
 const renderRow = (item: OfferList) => (
@@ -91,11 +88,15 @@ const renderRow = (item: OfferList) => (
       /> */}
       <div className="flex flex-col">
         <h3 className="font-semibold">{item.creatorIns.name}</h3>
-        <p className="text-xs text-gray-500">{item.creator.firstName + " " + item.creator.lastName}</p>
+        <p className="text-xs text-gray-500">
+          {item.creator.firstName + " " + item.creator.lastName}
+        </p>
       </div>
     </td>
 
-    <td className="hidden md:table-cell">{item.offerDate.toLocaleDateString()}</td>
+    <td className="hidden md:table-cell">
+      {item.offerDate.toLocaleDateString()}
+    </td>
     <td className="flex items-center gap-4 p-4">
       {/* <Image
         src={item.photo}
@@ -106,14 +107,18 @@ const renderRow = (item: OfferList) => (
       /> */}
       <div className="flex flex-col">
         <h3 className="font-semibold">{item.recipientIns.name}</h3>
-        <p className="text-xs text-gray-500">{item.recipient.firstName+ " " + item.recipient.lastName}</p>
-
+        <p className="text-xs text-gray-500">
+          {item.recipient.firstName + " " + item.recipient.lastName}
+        </p>
       </div>
     </td>
     {/* <td className="hidden md:table-cell">{item.expiryDate}</td> */}
     {/* <td className="hidden md:table-cell">{item.servicesOffered}</td> */}
     <td className="hidden md:table-cell">
-        {Number(item.amount).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      {Number(item.amount).toLocaleString("tr-TR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}
     </td>
     <td className="hidden md:table-cell">{item.status}</td>
     <td>
@@ -127,7 +132,7 @@ const renderRow = (item: OfferList) => (
           // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
           //   <Image src="/delete.png" alt="" width={16} height={16} />
           // </button>
-          <FormModal table="offer" type="delete" id={item.id}/>
+          <FormModal table="offer" type="delete" id={item.id} />
         )}
       </div>
     </td>
@@ -137,66 +142,69 @@ const renderRow = (item: OfferList) => (
 const OfferListPage = async ({
   searchParams,
 }: {
-  searchParams: { [key:string] : string | undefined };
+  searchParams: { [key: string]: string | undefined };
 }) => {
-  const {page, ...queryParams} = searchParams;
+  const { page, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;
 
   //URL PARAMS CONDITION
- 
+
   const query: Prisma.OfferCardsWhereInput = {}; // Prisma için boş bir query nesnesi oluşturuluyor.
 
-    if (queryParams) {
-      for (const [key, value] of Object.entries(queryParams)) {
-        if (value !== undefined) {
-          switch (key) {
-            case "recipientId":
-              const recipientId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-              if (!isNaN(recipientId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                query.recipientId = recipientId; 
-              }
-              break;
-              case "creatorId":
-                const creatorId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                if (!isNaN(creatorId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                  // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                  query.creatorId = creatorId; 
-                }
-                break;
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value !== undefined) {
+        switch (key) {
+          case "recipientId":
+            const recipientId = value; // value'yu tam sayıya çeviriyoruz.
+            if (recipientId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.recipientId = recipientId;
+            }
+            break;
+          case "creatorId":
+            const creatorId = value; // value'yu tam sayıya çeviriyoruz.
+            if (creatorId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.creatorId = creatorId;
+            }
+            break;
 
-              case "recipientInstId":
-                const recipientInstId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                if (!isNaN(recipientInstId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                  // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                  query.recipientInsId = recipientInstId; 
-                }
-                break;
+          case "recipientInstId":
+            const recipientInstId = value; // value'yu tam sayıya çeviriyoruz.
+            if (recipientInstId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.recipientInsId = recipientInstId;
+            }
+            break;
 
-              case "creatorInstId":
-                const creatorInstId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                if (!isNaN(creatorInstId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                  // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                  query.creatorInsId = creatorInstId; 
-                }
-                break;
-            // Diğer case'ler eklenebilir. Örneğin, daha fazla filtrasyon yapılmak istenirse.
-            case "search":
-              query.details = {contains:value, mode: "insensitive"}
-              break;
-          }
+          case "creatorInstId":
+            const creatorInstId = value; // value'yu tam sayıya çeviriyoruz.
+            if (creatorInstId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.creatorInsId = creatorInstId;
+            }
+            break;
+          // Diğer case'ler eklenebilir. Örneğin, daha fazla filtrasyon yapılmak istenirse.
+          case "search":
+            query.details = { contains: value, mode: "insensitive" };
+            break;
         }
       }
     }
+  }
 
-  const [data,count] = await prisma.$transaction([
-
-    prisma.offerCards.findMany ({
-      where:query,
+  const [data, count] = await prisma.$transaction([
+    prisma.offerCards.findMany({
+      where: query,
 
       include: {
-        paymentTerm:true,
+        paymentTerm: true,
         service: true,
         creator: true,
         creatorIns: true,
@@ -204,49 +212,46 @@ const OfferListPage = async ({
         recipientIns: true,
       },
 
-      take:ITEM_PER_PAGE,
-      skip: ITEM_PER_PAGE * (p-1),
+      take: ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
     }),
-    prisma.offerCards.count()
+    prisma.offerCards.count(),
   ]);
 
+  return (
+    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+      {/* TOP */}
+      <div className="flex item-center justify-between">
+        <h1 className="hidden md:block text-lg font-semibold">Tüm Teklifler</h1>
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+          <TableSearch />
+          <div className="flex items-center gap-4 self-end">
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              <Image src="/filter.png" alt="" width={14} height={14} />
+            </button>
 
-    
-
-    return (
-        <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
-            {/* TOP */}
-            <div className='flex item-center justify-between'>
-                <h1 className="hidden md:block text-lg font-semibold">Tüm Teklifler</h1>
-                <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
-                    <TableSearch />
-                    <div className="flex items-center gap-4 self-end">
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-                            <Image src="/filter.png" alt="" width={14} height={14}/>
-                        </button>
-
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-                            <Image src="/sort.png" alt="" width={14} height={14}/>
-                        </button>
-                        {role === "admin" && (
-                        // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-firelightorange">
-                        //     <Image src="/plus.png" alt="" width={14} height={14}/>
-                        // </button>
-                        <FormModal table="offer" type="create" />
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            {/* LIST */}
-            <div className=''>
-                <Table columns={columns} renderRow={renderRow} data={data}/>
-            </div>
-
-            {/* PAGINATION */}
-              <Pagination page={p} count={count} />
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              <Image src="/sort.png" alt="" width={14} height={14} />
+            </button>
+            {role === "admin" && (
+              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-firelightorange">
+              //     <Image src="/plus.png" alt="" width={14} height={14}/>
+              // </button>
+              <FormModal table="offer" type="create" />
+            )}
+          </div>
         </div>
-    )
-}
+      </div>
 
-export default OfferListPage
+      {/* LIST */}
+      <div className="">
+        <Table columns={columns} renderRow={renderRow} data={data} />
+      </div>
+
+      {/* PAGINATION */}
+      <Pagination page={p} count={count} />
+    </div>
+  );
+};
+
+export default OfferListPage;

@@ -11,10 +11,10 @@ const LowCustomerPage = () => {
       <div className="w-full lg:w-2/3">
         {/* USER CARDS */}
         <div className="flex gap-4 justify-between flex-wrap">
-          <UserCard type="cihazlarim" />
-          <UserCard type="bakimiyaklasan" />
-          <UserCard type="tekliflerim" />
-          <UserCard type="bakimlarim" />
+          <UserCard type="cihazlarim" link="" />
+          <UserCard type="bakimiyaklasan" link="" />
+          <UserCard type="tekliflerim" link="" />
+          <UserCard type="bakimlarim" link="" />
         </div>
 
         {/* MIDDLE CHARTS */}

@@ -173,7 +173,7 @@ const SingleUserPage = async ({
         <div className="bg-white p-4 rounded-md">
           <h1 className="text-xl font-semibold">Kısayollar</h1>
           <div className="mt-4 flex gap-4 flex-wrap text-xs text-black-500">
-            {user.roleId === 1 ? (
+            {user.roleId === "1" ? (
               <>
                 <Link
                   className="p-3 rounded-md bg-lamaSkyLight"
@@ -200,7 +200,7 @@ const SingleUserPage = async ({
                   Tüm Bildirimler
                 </Link>
               </>
-            ) : user.roleId === 4 || user.roleId === 5 ? (
+            ) : user.roleId === "4" || user.roleId === "5" ? (
               <>
                 <Link
                   className="p-3 rounded-md bg-lamaSkyLight"
@@ -227,7 +227,7 @@ const SingleUserPage = async ({
                   Kullanıcı&apos;nın Bildirimleri
                 </Link>
               </>
-            ) : user.roleId === 2 || user.roleId === 3 ? (
+            ) : user.roleId === "2" || user.roleId === "3" ? (
               <>
                 <Link
                   className="p-3 rounded-md bg-lamaSkyLight"

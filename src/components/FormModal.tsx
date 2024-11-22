@@ -50,9 +50,6 @@ const LogForm = dynamic(() => import("./forms/LogForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 
-
-
-
 const forms: {
   [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
 } = {
@@ -68,11 +65,7 @@ const forms: {
   institution: (type, data) => <InstitutionForm type={type} data={data} />,
   pinstitution: (type, data) => <PInstitutionForm type={type} data={data} />,
   isgmember: (type, data) => <IsgMemberForm type={type} data={data} />,
-  log: (type, data) => <LogForm type={type} data={data} />
-
-
-
-
+  log: (type, data) => <LogForm type={type} data={data} />,
 };
 
 const FormModal = ({
@@ -94,14 +87,13 @@ const FormModal = ({
     | "pinstitution"
     | "isgmember"
     | "log"
-    
     | "result"
     | "attendance"
     | "event"
     | "announcement";
   type: "create" | "update" | "delete";
   data?: any;
-  id?: number;
+  id?: string;
 }) => {
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
@@ -117,7 +109,8 @@ const FormModal = ({
     return type === "delete" && id ? (
       <form action="" className="p-4 flex flex-col gap-4">
         <span className="text-center font-medium">
-          Tüm veriler kaybolacak. Bunu silmek istediğinizden emin misiniz? {table}?
+          Tüm veriler kaybolacak. Bunu silmek istediğinizden emin misiniz?{" "}
+          {table}?
         </span>
         <button className="bg-red-700 text-white py-2 px-4 rounded-md border-none w-max self-center">
           Delete

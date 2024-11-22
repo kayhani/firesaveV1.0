@@ -5,59 +5,53 @@ import TableSearch from "@/components/TableSearch";
 import { role, maintenancesData } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import {  Services,
-          Devices, 
-          Users,
-          Institutions, 
-          Operations, 
-          MaintenanceCards,
-          Prisma
-        } from "@prisma/client";
+import {
+  Services,
+  Devices,
+  Users,
+  Institutions,
+  Operations,
+  MaintenanceCards,
+  Prisma,
+} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
-type ManintenanceList = MaintenanceCards & 
-                        { type: Services } & 
-                        { device: Devices } & 
-                        { provider: Users } & 
-                        { providerIns: Institutions } & 
-                        { customer: Users } & 
-                        { customerIns: Institutions } & 
-                        { oprtaions: Operations[] };
+type ManintenanceList = MaintenanceCards & { type: Services } & {
+  device: Devices;
+} & { provider: Users } & { providerIns: Institutions } & {
+  customer: Users;
+} & { customerIns: Institutions } & { oprtaions: Operations[] };
 
+const columns = [
+  {
+    header: "Kayıt No",
+    accessor: "id",
+  },
+  {
+    header: "Cihaz Seri No",
+    accessor: "deviceSerialNumber",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Servis Sağlayıcı",
+    accessor: "info",
+  },
+  {
+    header: "Bakım Tarihi",
+    accessor: "maintenanceDate",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Müşteri",
+    accessor: "info",
+  },
 
-
-const columns =[
-
-    {
-      header:"Kayıt No", 
-      accessor:"id",
-    },
-    {
-      header:"Cihaz Seri No", 
-      accessor:"deviceSerialNumber",
-      className: "hidden md:table-cell"
-    },
-    {
-      header:"Servis Sağlayıcı", 
-      accessor:"info",
-    },
-    {
-      header:"Bakım Tarihi", 
-      accessor:"maintenanceDate",
-      className: "hidden md:table-cell",
-    },
-    {
-      header:"Müşteri", 
-      accessor:"info",
-    },
-    
-    {
-      header:"Eylemler", 
-      accessor:"action",
-      className: "hidden md:table-cell",
-    },
-    
+  {
+    header: "Eylemler",
+    accessor: "action",
+    className: "hidden md:table-cell",
+  },
 ];
 
 const renderRow = (item: ManintenanceList) => (
@@ -78,10 +72,14 @@ const renderRow = (item: ManintenanceList) => (
       /> */}
       <div className="flex flex-col">
         <h3 className="font-semibold">{item.providerIns.name}</h3>
-        <p className="text-xs text-gray-500">{item.provider.firstName+ " " + item.provider.lastName}</p> 
+        <p className="text-xs text-gray-500">
+          {item.provider.firstName + " " + item.provider.lastName}
+        </p>
       </div>
     </td>
-    <td className="hidden md:table-cell">{item.maintenanceDate.toLocaleDateString()}</td>
+    <td className="hidden md:table-cell">
+      {item.maintenanceDate.toLocaleDateString()}
+    </td>
 
     <td className="flex items-center gap-4 p-4">
       {/* <Image
@@ -93,7 +91,9 @@ const renderRow = (item: ManintenanceList) => (
       /> */}
       <div className="flex flex-col">
         <h3 className="font-semibold">{item.customerIns.name}</h3>
-        <p className="text-xs text-gray-500">{item.customer.firstName + " " + item.customer.lastName}</p> 
+        <p className="text-xs text-gray-500">
+          {item.customer.firstName + " " + item.customer.lastName}
+        </p>
       </div>
     </td>
 
@@ -112,7 +112,7 @@ const renderRow = (item: ManintenanceList) => (
           // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
           //   <Image src="/delete.png" alt="" width={16} height={16} />
           // </button>
-          <FormModal table="maintenance" type="delete" id={item.id}/>
+          <FormModal table="maintenance" type="delete" id={item.id} />
         )}
       </div>
     </td>
@@ -120,128 +120,130 @@ const renderRow = (item: ManintenanceList) => (
 );
 
 const MaintenanceListPage = async ({
-    searchParams,
-  }: {
-    searchParams: { [key:string] : string | undefined };
-  }) => {
-    const {page, ...queryParams} = searchParams;
-  
-    const p = page ? parseInt(page) : 1;
-  
-    //URL PARAMS CONDITION
-   
-    const query: Prisma.MaintenanceCardsWhereInput = {}; // Prisma için boş bir query nesnesi oluşturuluyor.
-  
-      if (queryParams) {
-        for (const [key, value] of Object.entries(queryParams)) {
-          if (value !== undefined) {
-            switch (key) {
-              case "customerId":
-                const customerId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                if (!isNaN(customerId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                  // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                  query.customerId = customerId; 
-                }
-                break;
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const { page, ...queryParams } = searchParams;
 
-                case "providerId":
-                  const providerId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                  if (!isNaN(providerId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                    // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                    query.providerId = providerId; 
-                  }
-                  break;
+  const p = page ? parseInt(page) : 1;
 
-                case "customerInsId":
-                  const customerInstId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                  if (!isNaN(customerInstId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                    // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                    query.customerInsId = customerInstId; 
-                  }
-                  break;
+  //URL PARAMS CONDITION
 
-                case "providerInstId":
-                  const providerInstId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                  if (!isNaN(providerInstId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                    // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                    query.providerInsId = providerInstId; 
-                  }
-                  break;
+  const query: Prisma.MaintenanceCardsWhereInput = {}; // Prisma için boş bir query nesnesi oluşturuluyor.
 
-                case "deviceId":
-                  const deviceId = parseInt(value); // value'yu tam sayıya çeviriyoruz.
-                  if (!isNaN(deviceId)) { // geçerli bir sayı olup olmadığını kontrol ediyoruz.
-                    // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
-                    query.deviceId = deviceId; 
-                  }
-                  break;
-
-              
-              // Diğer case'ler eklenebilir. Örneğin, daha fazla filtrasyon yapılmak istenirse.
-              case "search":
-                query.details = {contains:value, mode: "insensitive"}
-                break;
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value !== undefined) {
+        switch (key) {
+          case "customerId":
+            const customerId = value; // value'yu tam sayıya çeviriyoruz.
+            if (customerId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.customerId = customerId;
             }
-          }
+            break;
+
+          case "providerId":
+            const providerId = value; // value'yu tam sayıya çeviriyoruz.
+            if (providerId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.providerId = providerId;
+            }
+            break;
+
+          case "customerInsId":
+            const customerInstId = value; // value'yu tam sayıya çeviriyoruz.
+            if (customerInstId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.customerInsId = customerInstId;
+            }
+            break;
+
+          case "providerInstId":
+            const providerInstId = value; // value'yu tam sayıya çeviriyoruz.
+            if (providerInstId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.providerInsId = providerInstId;
+            }
+            break;
+
+          case "deviceId":
+            const deviceId = value; // value'yu tam sayıya çeviriyoruz.
+            if (deviceId) {
+              // geçerli bir sayı olup olmadığını kontrol ediyoruz.
+              // Users tablosundaki roleId'ye göre filtreleme yapıyoruz.
+              query.deviceId = deviceId;
+            }
+            break;
+
+          // Diğer case'ler eklenebilir. Örneğin, daha fazla filtrasyon yapılmak istenirse.
+          case "search":
+            query.details = { contains: value, mode: "insensitive" };
+            break;
         }
       }
-  
-    const [data,count] = await prisma.$transaction([
-  
-      prisma.maintenanceCards.findMany ({
-        where:query,
-  
-        include: {
-          type: true,
-          device: true,
-          provider: true,
-          providerIns: true,
-          customer: true,
-          customerIns: true,
-          operations: true         
-        },
-  
-        take:ITEM_PER_PAGE,
-        skip: ITEM_PER_PAGE * (p-1),
-      }),
-      prisma.maintenanceCards.count()
-    ]);
-  
+    }
+  }
 
-    return (
-        <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
-            {/* TOP */}
-            <div className='flex item-center justify-between'>
-                <h1 className="hidden md:block text-lg font-semibold">Tüm Bakımlar</h1>
-                <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
-                    <TableSearch />
-                    <div className="flex items-center gap-4 self-end">
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-                            <Image src="/filter.png" alt="" width={14} height={14}/>
-                        </button>
+  const [data, count] = await prisma.$transaction([
+    prisma.maintenanceCards.findMany({
+      where: query,
 
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-                            <Image src="/sort.png" alt="" width={14} height={14}/>
-                        </button>
-                        {role === "admin" && (
-                        // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-firelightorange">
-                        //     <Image src="/plus.png" alt="" width={14} height={14}/>
-                        // </button>
-                        <FormModal table="maintenance" type="create" />
-                        )}
-                    </div>
-                </div>
-            </div>
+      include: {
+        type: true,
+        device: true,
+        provider: true,
+        providerIns: true,
+        customer: true,
+        customerIns: true,
+        operations: true,
+      },
 
-            {/* LIST */}
-            <div className=''>
-                <Table columns={columns} renderRow={renderRow} data={data}/>
-            </div>
+      take: ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
+    }),
+    prisma.maintenanceCards.count(),
+  ]);
 
-            {/* PAGINATION */}
-              <Pagination page={p} count={count} />
+  return (
+    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+      {/* TOP */}
+      <div className="flex item-center justify-between">
+        <h1 className="hidden md:block text-lg font-semibold">Tüm Bakımlar</h1>
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+          <TableSearch />
+          <div className="flex items-center gap-4 self-end">
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              <Image src="/filter.png" alt="" width={14} height={14} />
+            </button>
+
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              <Image src="/sort.png" alt="" width={14} height={14} />
+            </button>
+            {role === "admin" && (
+              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-firelightorange">
+              //     <Image src="/plus.png" alt="" width={14} height={14}/>
+              // </button>
+              <FormModal table="maintenance" type="create" />
+            )}
+          </div>
         </div>
-    )
-}
+      </div>
 
-export default MaintenanceListPage
+      {/* LIST */}
+      <div className="">
+        <Table columns={columns} renderRow={renderRow} data={data} />
+      </div>
+
+      {/* PAGINATION */}
+      <Pagination page={p} count={count} />
+    </div>
+  );
+};
+
+export default MaintenanceListPage;

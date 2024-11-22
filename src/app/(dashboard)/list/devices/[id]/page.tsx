@@ -83,7 +83,7 @@ const SingleDevicePage = async ({
                     table="device"
                     type="update"
                     data={{
-                      id: 1,
+                      id: "1",
                       deviceId: "1234567890",
                       serialNumber: "95958478784",
                       ownerId: "75",

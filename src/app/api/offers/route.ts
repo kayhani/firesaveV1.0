@@ -3,15 +3,15 @@ import prisma from '@/lib/prisma'; // Prisma'dan veritabanı bağlantısını sa
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
-    const recipientInstId = searchParams.get('recipientInstId');
-    const creatorInstId = searchParams.get('creatorInstId');
+    const recipientInsId=  searchParams.get('recipientInsId');
+    const creatorInsId=  searchParams.get('creatorInsId');
 
     try {
         const offers = await prisma.offerCards.findMany({
             where: {
                 OR: [
-                    { recipientInsId: Number(recipientInstId) },
-                    { creatorInsId: Number(creatorInstId) },
+                    ...recipientInsId ? [{ recipientInsId: recipientInsId }] : [],
+                    ...creatorInsId ? [{ creatorInsId: creatorInsId }] : []
                 ],
             },
         });
