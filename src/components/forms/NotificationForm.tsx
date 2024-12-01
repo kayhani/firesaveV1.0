@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,22 +9,40 @@ import { Device, NotificationType, User, Institution } from "@/lib/types";
 import { toast } from "react-hot-toast";
 
 const schema = z.object({
-  serialNumber: z.string().min(1, { message: "Cihaz seri numarası zorunludur!" }),
+  serialNumber: z
+    .string()
+    .min(1, { message: "Cihaz seri numarası zorunludur!" }),
   deviceType: z.string().min(1, { message: "Cihaz türü zorunludur!" }),
-  ownerInstitution: z.string().min(1, { message: "Cihaz sahibi kurum zorunludur!" }),
-  ownerPerson: z.string().min(1, { message: "Cihaz sorumlu personeli zorunludur!" }),
-  providerInstitution: z.string().min(1, { message: "Hizmet sağlayıcı kurum zorunludur!" }),
-  providerPerson: z.string().min(1, { message: "Hizmet sağlayıcı personeli zorunludur!" }),
+  ownerInstitution: z
+    .string()
+    .min(1, { message: "Cihaz sahibi kurum zorunludur!" }),
+  ownerPerson: z
+    .string()
+    .min(1, { message: "Cihaz sorumlu personeli zorunludur!" }),
+  providerInstitution: z
+    .string()
+    .min(1, { message: "Hizmet sağlayıcı kurum zorunludur!" }),
+  providerPerson: z
+    .string()
+    .min(1, { message: "Hizmet sağlayıcı personeli zorunludur!" }),
   notificationType: z.string().min(1, { message: "Bildirim türü seçilmeli!" }),
   content: z.string().min(1, { message: "Bildirim içeriği zorunludur!" }),
-  isRead: z.string().default("Okunmadi")
+  isRead: z.string().default("Okunmadi"),
 });
 
 type FormInputs = z.infer<typeof schema>;
 
-const NotificationForm = () => {
+const NotificationForm = ({
+  type,
+  data,
+}: {
+  type: "create" | "update";
+  data?: any;
+}) => {
   const [device, setDevice] = useState<Device | null>(null);
-  const [notificationTypes, setNotificationTypes] = useState<NotificationType[]>([]);
+  const [notificationTypes, setNotificationTypes] = useState<
+    NotificationType[]
+  >([]);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -33,12 +51,12 @@ const NotificationForm = () => {
     setValue,
     formState: { errors },
     watch,
-    reset
+    reset,
   } = useForm<FormInputs>({
     resolver: zodResolver(schema),
     defaultValues: {
-      isRead: "Okunmadi"
-    }
+      isRead: "Okunmadi",
+    },
   });
 
   const serialNumber = watch("serialNumber");
@@ -47,8 +65,8 @@ const NotificationForm = () => {
   useEffect(() => {
     const fetchNotificationTypes = async () => {
       try {
-        const response = await fetch('/api/notification-types');
-        if (!response.ok) throw new Error('Bildirim türleri getirilemedi');
+        const response = await fetch("/api/notification-types");
+        if (!response.ok) throw new Error("Bildirim türleri getirilemedi");
         const data = await response.json();
         setNotificationTypes(data);
       } catch (error) {
@@ -65,9 +83,11 @@ const NotificationForm = () => {
       if (serialNumber?.length > 0) {
         setLoading(true);
         try {
-          const response = await fetch(`/api/devices?serialNumber=${serialNumber}`);
+          const response = await fetch(
+            `/api/devices?serialNumber=${serialNumber}`
+          );
           if (!response.ok) {
-            throw new Error('Cihaz bulunamadı');
+            throw new Error("Cihaz bulunamadı");
           }
           const data = await response.json();
           setDevice(data);
@@ -114,19 +134,19 @@ const NotificationForm = () => {
         recipientId: device.owner.id,
         recipientInsId: device.ownerIns.id,
         typeId: data.notificationType,
-        isRead: data.isRead
+        isRead: data.isRead,
       };
 
-      const response = await fetch('/api/notifications', {
-        method: 'POST',
+      const response = await fetch("/api/notifications", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(notificationData),
       });
 
       if (!response.ok) {
-        throw new Error('Bildirim oluşturulamadı');
+        throw new Error("Bildirim oluşturulamadı");
       }
 
       toast.success("Bildirim başarıyla oluşturuldu!");
@@ -138,7 +158,10 @@ const NotificationForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-4 max-w-7xl mx-auto w-full" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-4 max-w-7xl mx-auto w-full"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <h1 className="text-xl font-semibold">Bildirim Oluştur</h1>
 
       {/* Cihaz Bilgileri */}
@@ -162,7 +185,9 @@ const NotificationForm = () => {
               )}
             </div>
             {errors.serialNumber && (
-              <span className="text-xs text-red-500">{errors.serialNumber.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.serialNumber.message}
+              </span>
             )}
           </div>
 
@@ -225,7 +250,9 @@ const NotificationForm = () => {
 
       {/* Bildirim Detayları */}
       <div className="space-y-4">
-        <h2 className="text-sm font-medium text-gray-500">Bildirim Detayları</h2>
+        <h2 className="text-sm font-medium text-gray-500">
+          Bildirim Detayları
+        </h2>
         <div className="space-y-4">
           {/* Bildirim Türü Seçimi */}
           <div className="flex flex-col gap-2">
@@ -243,7 +270,9 @@ const NotificationForm = () => {
               ))}
             </select>
             {errors.notificationType && (
-              <span className="text-xs text-red-500">{errors.notificationType.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.notificationType.message}
+              </span>
             )}
           </div>
 
@@ -257,7 +286,9 @@ const NotificationForm = () => {
               placeholder="Bildirim içeriğini giriniz"
             />
             {errors.content && (
-              <span className="text-xs text-red-500">{errors.content.message}</span>
+              <span className="text-xs text-red-500">
+                {errors.content.message}
+              </span>
             )}
           </div>
 

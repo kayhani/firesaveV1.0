@@ -120,147 +120,149 @@ const Services = () => {
           </div>
         </div>
       </div>
+      <section id="1" className="p-20">
+        <div className="bg-gray-100 p-6 text-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
+              Acil Durum Danışmanlığı
+            </h1>
+            <p className="text-justify mt-2">
+              Acil Durum Danışmanlığı, kuruluşların ve bireylerin beklenmeyen
+              olaylar karşısında hazırlıklı olmalarını, bu tür durumlarda etkin
+              ve hızlı bir şekilde hareket etmelerini sağlayan profesyonel bir
+              hizmettir. Bu danışmanlık, doğal afetler, endüstriyel kazalar,
+              yangın, salgın hastalıklar, siber saldırılar ve diğer kriz
+              senaryoları gibi durumlara yönelik planlama, eğitim ve uygulama
+              süreçlerini içerir.
+            </p>
 
-      <div className="bg-gray-100 p-6 text-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
-            Acil Durum Danışmanlığı
-          </h1>
-          <p className="text-justify mt-2">
-            Acil Durum Danışmanlığı, kuruluşların ve bireylerin beklenmeyen
-            olaylar karşısında hazırlıklı olmalarını, bu tür durumlarda etkin ve
-            hızlı bir şekilde hareket etmelerini sağlayan profesyonel bir
-            hizmettir. Bu danışmanlık, doğal afetler, endüstriyel kazalar,
-            yangın, salgın hastalıklar, siber saldırılar ve diğer kriz
-            senaryoları gibi durumlara yönelik planlama, eğitim ve uygulama
-            süreçlerini içerir.
-          </p>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              Acil Durum Danışmanlığının Kapsamı
+            </h2>
+            <p className="text-justify mt-2">
+              Acil durum danışmanlığı hizmeti genellikle aşağıdaki konuları
+              kapsar:
+            </p>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            Acil Durum Danışmanlığının Kapsamı
-          </h2>
-          <p className="text-justify mt-2">
-            Acil durum danışmanlığı hizmeti genellikle aşağıdaki konuları
-            kapsar:
-          </p>
+            <h3 className="text-lg font-semibold text-red-600 mt-6">
+              1. Risk Analizi ve Değerlendirme
+            </h3>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                Kuruluşun faaliyet alanına uygun potansiyel risklerin
+                belirlenmesi
+              </li>
+              <li className="ml-4">
+                Olası tehlikelerin etkilerinin analiz edilmesi
+              </li>
+              <li className="ml-4">Risk seviyelerine göre önceliklendirme</li>
+            </ul>
 
-          <h3 className="text-lg font-semibold text-red-600 mt-6">
-            1. Risk Analizi ve Değerlendirme
-          </h3>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              Kuruluşun faaliyet alanına uygun potansiyel risklerin belirlenmesi
-            </li>
-            <li className="ml-4">
-              Olası tehlikelerin etkilerinin analiz edilmesi
-            </li>
-            <li className="ml-4">Risk seviyelerine göre önceliklendirme</li>
-          </ul>
+            <h3 className="text-lg font-semibold text-red-600 mt-6">
+              2. Acil Durum Planlarının Hazırlanması
+            </h3>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">Tahliye planları</li>
+              <li className="ml-4">Kriz yönetimi prosedürleri</li>
+              <li className="ml-4">İletişim stratejileri</li>
+              <li className="ml-4">Alternatif çalışma yöntemleri</li>
+            </ul>
 
-          <h3 className="text-lg font-semibold text-red-600 mt-6">
-            2. Acil Durum Planlarının Hazırlanması
-          </h3>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">Tahliye planları</li>
-            <li className="ml-4">Kriz yönetimi prosedürleri</li>
-            <li className="ml-4">İletişim stratejileri</li>
-            <li className="ml-4">Alternatif çalışma yöntemleri</li>
-          </ul>
+            <h3 className="text-lg font-semibold text-red-600 mt-6">
+              3. Eğitim ve Farkındalık Çalışmaları
+            </h3>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                Çalışanlar için düzenli acil durum eğitimleri
+              </li>
+              <li className="ml-4">
+                Tatbikatlarla uygulamalı eğitim programları
+              </li>
+              <li className="ml-4">
+                Kriz sırasında psikolojik dayanıklılığı artırıcı içerikler
+              </li>
+            </ul>
 
-          <h3 className="text-lg font-semibold text-red-600 mt-6">
-            3. Eğitim ve Farkındalık Çalışmaları
-          </h3>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              Çalışanlar için düzenli acil durum eğitimleri
-            </li>
-            <li className="ml-4">
-              Tatbikatlarla uygulamalı eğitim programları
-            </li>
-            <li className="ml-4">
-              Kriz sırasında psikolojik dayanıklılığı artırıcı içerikler
-            </li>
-          </ul>
+            <h3 className="text-lg font-semibold text-red-600 mt-6">
+              4. Acil Durum Yönetim Sistemi Kurulumu
+            </h3>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">Erken uyarı sistemlerinin entegrasyonu</li>
+              <li className="ml-4">Acil müdahale ekiplerinin organizasyonu</li>
+              <li className="ml-4">Teknolojik altyapının güçlendirilmesi</li>
+            </ul>
 
-          <h3 className="text-lg font-semibold text-red-600 mt-6">
-            4. Acil Durum Yönetim Sistemi Kurulumu
-          </h3>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">Erken uyarı sistemlerinin entegrasyonu</li>
-            <li className="ml-4">Acil müdahale ekiplerinin organizasyonu</li>
-            <li className="ml-4">Teknolojik altyapının güçlendirilmesi</li>
-          </ul>
+            <h3 className="text-lg font-semibold text-red-600 mt-6">
+              5. İzleme ve Geliştirme
+            </h3>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                Planların düzenli aralıklarla test edilmesi ve iyileştirilmesi
+              </li>
+              <li className="ml-4">
+                Güncel yasal gerekliliklere uyum sağlanması
+              </li>
+              <li className="ml-4">
+                Yeni tehdit ve risklere uygun güncellemeler
+              </li>
+            </ul>
 
-          <h3 className="text-lg font-semibold text-red-600 mt-6">
-            5. İzleme ve Geliştirme
-          </h3>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              Planların düzenli aralıklarla test edilmesi ve iyileştirilmesi
-            </li>
-            <li className="ml-4">
-              Güncel yasal gerekliliklere uyum sağlanması
-            </li>
-            <li className="ml-4">
-              Yeni tehdit ve risklere uygun güncellemeler
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              Acil Durum Danışmanlığının Faydaları
+            </h2>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>Hızlı Müdahale Yeteneği:</strong> Kriz anında kayıpların
+                en aza indirilmesi sağlanır.
+              </li>
+              <li className="ml-4">
+                <strong>Hukuki Uyum:</strong> İş sağlığı ve güvenliği
+                yönetmeliklerine uygun planlama yapılır.
+              </li>
+              <li className="ml-4">
+                <strong>Reputasyonun Korunması:</strong> Kurumsal itibarın
+                korunmasına katkı sağlar.
+              </li>
+              <li className="ml-4">
+                <strong>Finansal Güvenlik:</strong> Doğru yönetimle mali
+                kayıpların önüne geçilir.
+              </li>
+              <li className="ml-4">
+                <strong>Çalışan Güvenliği:</strong> Personelin güvenliğini
+                sağlayarak motivasyonu artırır.
+              </li>
+            </ul>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            Acil Durum Danışmanlığının Faydaları
-          </h2>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>Hızlı Müdahale Yeteneği:</strong> Kriz anında kayıpların
-              en aza indirilmesi sağlanır.
-            </li>
-            <li className="ml-4">
-              <strong>Hukuki Uyum:</strong> İş sağlığı ve güvenliği
-              yönetmeliklerine uygun planlama yapılır.
-            </li>
-            <li className="ml-4">
-              <strong>Reputasyonun Korunması:</strong> Kurumsal itibarın
-              korunmasına katkı sağlar.
-            </li>
-            <li className="ml-4">
-              <strong>Finansal Güvenlik:</strong> Doğru yönetimle mali
-              kayıpların önüne geçilir.
-            </li>
-            <li className="ml-4">
-              <strong>Çalışan Güvenliği:</strong> Personelin güvenliğini
-              sağlayarak motivasyonu artırır.
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              Kimler Acil Durum Danışmanlığı Almalı?
+            </h2>
+            <p className="text-justify mt-2">
+              Acil Durum Danışmanlığı, farklı sektörlerdeki kurumlar için kritik
+              öneme sahiptir. Aşağıdaki kurumlar ve işletmeler acil durum
+              danışmanlığı hizmeti almalıdır:
+            </p>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            Kimler Acil Durum Danışmanlığı Almalı?
-          </h2>
-          <p className="text-justify mt-2">
-            Acil Durum Danışmanlığı, farklı sektörlerdeki kurumlar için kritik
-            öneme sahiptir. Aşağıdaki kurumlar ve işletmeler acil durum
-            danışmanlığı hizmeti almalıdır:
-          </p>
-
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>İşletmeler ve Fabrikalar:</strong> Üretim süreçlerinde
-              kazaların önlenmesi ve yangın risklerinin yönetimi için.
-            </li>
-            <li className="ml-4">
-              <strong>Okullar ve Hastaneler:</strong> Öğrenci, hasta ve
-              çalışanların güvenliği için.
-            </li>
-            <li className="ml-4">
-              <strong>Kamu Kurumları:</strong> Afet durumlarına karşı
-              vatandaşların güvenliğini sağlamak amacıyla.
-            </li>
-            <li className="ml-4">
-              <strong>Küçük ve Büyük Ölçekli Şirketler:</strong> Siber
-              tehditlere karşı iş sürekliliği planlarının oluşturulması için.
-            </li>
-          </ul>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>İşletmeler ve Fabrikalar:</strong> Üretim süreçlerinde
+                kazaların önlenmesi ve yangın risklerinin yönetimi için.
+              </li>
+              <li className="ml-4">
+                <strong>Okullar ve Hastaneler:</strong> Öğrenci, hasta ve
+                çalışanların güvenliği için.
+              </li>
+              <li className="ml-4">
+                <strong>Kamu Kurumları:</strong> Afet durumlarına karşı
+                vatandaşların güvenliğini sağlamak amacıyla.
+              </li>
+              <li className="ml-4">
+                <strong>Küçük ve Büyük Ölçekli Şirketler:</strong> Siber
+                tehditlere karşı iş sürekliliği planlarının oluşturulması için.
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </section>
 
       <Footer />
     </div>

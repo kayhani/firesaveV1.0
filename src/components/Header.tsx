@@ -31,18 +31,21 @@ export default function Header() {
       title: "Yangın Güvenliğinde Profesyonel Çözümler",
       description: "İşletmeniz için eksiksiz yangın güvenlik sistemleri",
       buttonText: "Hemen Başlayın",
+      href: "#",
     },
     {
       image: "/2.jpg",
       title: "Uzman Eğitim Kadrosu",
       description: "Teorik ve uygulamalı yangın güvenlik eğitimleri",
       buttonText: "Eğitimleri İncele",
+      href: "/landpage/education",
     },
     {
       image: "/3.jpg",
       title: "7/24 Teknik Destek",
       description: "Acil durumlarınızda yanınızdayız",
       buttonText: "Bize Ulaşın",
+      href: "#",
     },
   ];
 
@@ -116,25 +119,25 @@ export default function Header() {
                   Hizmetler
                 </a>
                 <a
-                  href="/landpage/education/#education"
+                  href="/landpage/education/#1"
                   className="text-gray-700 hover:text-red-600"
                 >
                   Eğitimler
                 </a>
                 <a
-                  href="/landpage/analytics"
+                  href="/landpage/analytics#1"
                   className="text-gray-700 hover:text-red-600"
                 >
                   Analizler
                 </a>
                 <a
-                  href="/landpage/consultancy"
+                  href="/landpage/consultancy#1"
                   className="text-gray-700 hover:text-red-600"
                 >
                   Danismanlik
                 </a>
                 <a
-                  href="/landpage/about"
+                  href="/landpage/about#1"
                   className="text-gray-700 hover:text-red-600"
                 >
                   Hakkimizda
@@ -222,9 +225,11 @@ export default function Header() {
                 <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
                   {slide.description}
                 </p>
-                <button className="px-8 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
-                  {slide.buttonText}
-                </button>
+                <Link href={slide.href}>
+                  <button className="px-8 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                    {slide.buttonText}
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

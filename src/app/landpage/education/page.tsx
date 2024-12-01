@@ -120,227 +120,232 @@ const Services = () => {
           </div>
         </div>
       </div>
+      <section id="1" className="p-20">
+        <div className="bg-gray-100 p-6 text-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
+              Yangın Güvenliği Eğitimleri
+            </h1>
+            <p className="text-justify mt-2">
+              Yangın güvenliği eğitimleri, çalışanların, öğrencilerin, ev
+              sahiplerinin ve diğer bireylerin yangın anında nasıl
+              davranacaklarını, yangın öncesi, sırası ve sonrasında alacakları
+              önlemleri anlamalarını sağlayan kritik bir eğitim türüdür. Yangın
+              güvenliği eğitiminin türleri ve içerikleri, hedef kitleye, ortamın
+              özelliklerine ve yerel mevzuatlara göre çeşitlenebilir. Yangın
+              Eğitim Türleri Aşağıdaki Gibi Belirlenmektedir.
+            </p>
 
-      <div className="bg-gray-100 p-6 text-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
-            Yangın Güvenliği Eğitimleri
-          </h1>
-          <p className="text-justify mt-2">
-            Yangın güvenliği eğitimleri, çalışanların, öğrencilerin, ev
-            sahiplerinin ve diğer bireylerin yangın anında nasıl
-            davranacaklarını, yangın öncesi, sırası ve sonrasında alacakları
-            önlemleri anlamalarını sağlayan kritik bir eğitim türüdür. Yangın
-            güvenliği eğitiminin türleri ve içerikleri, hedef kitleye, ortamın
-            özelliklerine ve yerel mevzuatlara göre çeşitlenebilir. Yangın
-            Eğitim Türleri Aşağıdaki Gibi Belirlenmektedir.
-          </p>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              1. Temel Yangın Güvenliği Eğitimi
+            </h2>
+            <p className="text-justify mt-2">
+              Bu eğitim, her bireyin alması gereken en temel yangın güvenliği
+              bilgilerini içerir.
+            </p>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>Yangının Tanımı ve Türleri:</strong> Yangının nasıl
+                başladığı, hangi tür yangınların ortaya çıkabileceği (örneğin,
+                A, B, C, D, F sınıfı yangınları) ve her tür yangın için uygun
+                söndürme yöntemleri.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Güvenliği Ekipmanları:</strong> Yangın
+                söndürücüler, yangın alarm sistemleri, yangın çıkışları, yangın
+                dolapları, topraklama sistemleri ve yangın kapıları gibi temel
+                yangın güvenliği ekipmanlarının kullanımı.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Öncesi Hazırlık:</strong> Bina planları, çıkış
+                yolları, acil durum numaraları, yangın tatbikatları ve yangın
+                güvenliği ekipmanlarının yerleri.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Çıkış Yolları ve Tahliye Planları:</strong>{" "}
+                Binalarda yangın çıkış yollarının nasıl kullanılacağı, tahliye
+                işlemleri ve toplanma alanlarının belirlenmesi.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın İhbarı ve İlk Müdahale:</strong> Yangın alarmını
+                devreye sokma, acil durum ekiplerine bilgi verme ve yangına
+                müdahale için temel yöntemler.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Tatbikatları:</strong> Çalışanlar için düzenli
+                olarak yangın tatbikatlarının yapılması ve bu tatbikatlar
+                sırasında doğru tahliye ve söndürme işlemlerinin pratikte
+                uygulanması.
+              </li>
+            </ul>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            1. Temel Yangın Güvenliği Eğitimi
-          </h2>
-          <p className="text-justify mt-2">
-            Bu eğitim, her bireyin alması gereken en temel yangın güvenliği
-            bilgilerini içerir.
-          </p>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>Yangının Tanımı ve Türleri:</strong> Yangının nasıl
-              başladığı, hangi tür yangınların ortaya çıkabileceği (örneğin, A,
-              B, C, D, F sınıfı yangınları) ve her tür yangın için uygun
-              söndürme yöntemleri.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Güvenliği Ekipmanları:</strong> Yangın
-              söndürücüler, yangın alarm sistemleri, yangın çıkışları, yangın
-              dolapları, topraklama sistemleri ve yangın kapıları gibi temel
-              yangın güvenliği ekipmanlarının kullanımı.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Öncesi Hazırlık:</strong> Bina planları, çıkış
-              yolları, acil durum numaraları, yangın tatbikatları ve yangın
-              güvenliği ekipmanlarının yerleri.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Çıkış Yolları ve Tahliye Planları:</strong>{" "}
-              Binalarda yangın çıkış yollarının nasıl kullanılacağı, tahliye
-              işlemleri ve toplanma alanlarının belirlenmesi.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın İhbarı ve İlk Müdahale:</strong> Yangın alarmını
-              devreye sokma, acil durum ekiplerine bilgi verme ve yangına
-              müdahale için temel yöntemler.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Tatbikatları:</strong> Çalışanlar için düzenli
-              olarak yangın tatbikatlarının yapılması ve bu tatbikatlar
-              sırasında doğru tahliye ve söndürme işlemlerinin pratikte
-              uygulanması.
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              2. Yangın Söndürme Eğitimi
+            </h2>
+            <p className="text-justify mt-2">
+              Yangın söndürme eğitimi, yangın güvenliği konusunda daha
+              derinlemesine bilgi ve pratik beceriler kazandırmayı amaçlar.
+            </p>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>Yangın Söndürücü Türleri ve Kullanımı:</strong> ABC tipi
+                kuru kimyevi toz, CO2 (karbon dioksit) ve su bazlı yangın
+                söndürücüler gibi yangın söndürme araçlarının nasıl
+                kullanıldığı.
+              </li>
+              <li className="ml-4">
+                <strong>Yangına Müdahale Teknikleri:</strong> Yangının
+                yayılmasını engellemek için alınacak önlemler, yangın
+                söndürücülerinin nasıl etkili bir şekilde kullanılacağı.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Sınıflarına Göre Söndürme Yöntemleri:</strong>{" "}
+                Her sınıf yangına uygun söndürme yöntemlerinin öğretilmesi.
+                (Örneğin, elektrik yangınlarında su kullanılmaz.)
+              </li>
+              <li className="ml-4">
+                <strong>Acil Durumda İlk Yardım:</strong> Yangın sırasında
+                karşılaşılan yaralanmalarda yapılacak ilk yardım uygulamaları.
+              </li>
+            </ul>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            2. Yangın Söndürme Eğitimi
-          </h2>
-          <p className="text-justify mt-2">
-            Yangın söndürme eğitimi, yangın güvenliği konusunda daha
-            derinlemesine bilgi ve pratik beceriler kazandırmayı amaçlar.
-          </p>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>Yangın Söndürücü Türleri ve Kullanımı:</strong> ABC tipi
-              kuru kimyevi toz, CO2 (karbon dioksit) ve su bazlı yangın
-              söndürücüler gibi yangın söndürme araçlarının nasıl kullanıldığı.
-            </li>
-            <li className="ml-4">
-              <strong>Yangına Müdahale Teknikleri:</strong> Yangının yayılmasını
-              engellemek için alınacak önlemler, yangın söndürücülerinin nasıl
-              etkili bir şekilde kullanılacağı.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Sınıflarına Göre Söndürme Yöntemleri:</strong> Her
-              sınıf yangına uygun söndürme yöntemlerinin öğretilmesi. (Örneğin,
-              elektrik yangınlarında su kullanılmaz.)
-            </li>
-            <li className="ml-4">
-              <strong>Acil Durumda İlk Yardım:</strong> Yangın sırasında
-              karşılaşılan yaralanmalarda yapılacak ilk yardım uygulamaları.
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              3. İleri Seviye Yangın Güvenliği Eğitimi
+            </h2>
+            <p className="text-justify mt-2">
+              Bu eğitim türü, yangın güvenliği uzmanları veya yangın güvenliği
+              sorumluları için daha derinlemesine ve teknik bilgi gerektirir.
+            </p>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>Yangın Güvenliği Yönetim Sistemleri:</strong> Yangın
+                güvenliği stratejilerinin nasıl planlanacağı ve uygulanacağı,
+                yangın güvenliği politikaları ve prosedürleri.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Risk Analizi ve Değerlendirmesi:</strong> Yangın
+                risklerinin belirlenmesi ve yangın güvenliği önlemlerinin buna
+                göre optimize edilmesi.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Güvenliği Denetimleri:</strong> Binalarda yapılan
+                yangın güvenliği denetimleri, yangın güvenliği ekipmanlarının
+                periyodik bakımı, test edilmesi ve yangın tatbikatlarının
+                düzenlenmesi.
+              </li>
+              <li className="ml-4">
+                <strong>Acil Durum Planlaması:</strong> Yangın anında yapılacak
+                acil durum müdahale planlarının hazırlanması ve uygulanması.
+              </li>
+              <li className="ml-4">
+                <strong>Yangın Yöneticisi Eğitimleri:</strong> Yangın güvenliği
+                departmanlarında görev alacak kişilere yönelik yangın güvenliği
+                yönetimi, liderlik ve kriz yönetimi eğitimi.
+              </li>
+            </ul>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            3. İleri Seviye Yangın Güvenliği Eğitimi
-          </h2>
-          <p className="text-justify mt-2">
-            Bu eğitim türü, yangın güvenliği uzmanları veya yangın güvenliği
-            sorumluları için daha derinlemesine ve teknik bilgi gerektirir.
-          </p>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>Yangın Güvenliği Yönetim Sistemleri:</strong> Yangın
-              güvenliği stratejilerinin nasıl planlanacağı ve uygulanacağı,
-              yangın güvenliği politikaları ve prosedürleri.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Risk Analizi ve Değerlendirmesi:</strong> Yangın
-              risklerinin belirlenmesi ve yangın güvenliği önlemlerinin buna
-              göre optimize edilmesi.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Güvenliği Denetimleri:</strong> Binalarda yapılan
-              yangın güvenliği denetimleri, yangın güvenliği ekipmanlarının
-              periyodik bakımı, test edilmesi ve yangın tatbikatlarının
-              düzenlenmesi.
-            </li>
-            <li className="ml-4">
-              <strong>Acil Durum Planlaması:</strong> Yangın anında yapılacak
-              acil durum müdahale planlarının hazırlanması ve uygulanması.
-            </li>
-            <li className="ml-4">
-              <strong>Yangın Yöneticisi Eğitimleri:</strong> Yangın güvenliği
-              departmanlarında görev alacak kişilere yönelik yangın güvenliği
-              yönetimi, liderlik ve kriz yönetimi eğitimi.
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              4. Yangın Tatbikatı Eğitimi
+            </h2>
+            <p className="text-justify mt-2">
+              Yangın tatbikatları, teorik eğitimin yanı sıra pratik becerilerin
+              geliştirilmesine yardımcı olur. Bu eğitim türü, çalışanların
+              gerçek bir yangın anında nasıl davranacaklarını öğrenmelerine
+              yardımcı olur.
+            </p>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>Yangın Tatbikatı Senaryoları:</strong> Gerçekçi yangın
+                durumlarını simüle ederek çalışanlara nasıl hareket edecekleri
+                öğretilebilir. Tatbikatlar sırasında, yangın çıkışı, tahliye,
+                yangın söndürme teknikleri ve ilk yardım uygulamaları gibi
+                beceriler test edilir.
+              </li>
+              <li className="ml-4">
+                <strong>Acil Durum Yöneticilerinin Rolü:</strong> Yangın
+                tatbikatlarında yangın güvenliği sorumlularının ve
+                yöneticilerinin rolü, çalışanlara liderlik etme ve organizasyonu
+                sağlama.
+              </li>
+              <li className="ml-4">
+                <strong>Çalışanların Değerlendirilmesi:</strong> Tatbikat
+                sonrasında çalışanların yangın güvenliği bilgileri ve tatbikat
+                sırasında gösterdikleri performans değerlendirilir, eksiklikler
+                tespit edilir.
+              </li>
+            </ul>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            4. Yangın Tatbikatı Eğitimi
-          </h2>
-          <p className="text-justify mt-2">
-            Yangın tatbikatları, teorik eğitimin yanı sıra pratik becerilerin
-            geliştirilmesine yardımcı olur. Bu eğitim türü, çalışanların gerçek
-            bir yangın anında nasıl davranacaklarını öğrenmelerine yardımcı
-            olur.
-          </p>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>Yangın Tatbikatı Senaryoları:</strong> Gerçekçi yangın
-              durumlarını simüle ederek çalışanlara nasıl hareket edecekleri
-              öğretilebilir. Tatbikatlar sırasında, yangın çıkışı, tahliye,
-              yangın söndürme teknikleri ve ilk yardım uygulamaları gibi
-              beceriler test edilir.
-            </li>
-            <li className="ml-4">
-              <strong>Acil Durum Yöneticilerinin Rolü:</strong> Yangın
-              tatbikatlarında yangın güvenliği sorumlularının ve yöneticilerinin
-              rolü, çalışanlara liderlik etme ve organizasyonu sağlama.
-            </li>
-            <li className="ml-4">
-              <strong>Çalışanların Değerlendirilmesi:</strong> Tatbikat
-              sonrasında çalışanların yangın güvenliği bilgileri ve tatbikat
-              sırasında gösterdikleri performans değerlendirilir, eksiklikler
-              tespit edilir.
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              5. Yangın Güvenliği Farkındalık Eğitimi
+            </h2>
+            <p className="text-justify mt-2">
+              Bu tür eğitimler, özellikle büyük kurumlar veya kamu alanlarında
+              çalışan bireyler için uygundur ve herkesin yangın güvenliği
+              konusunda farkındalığını artırmayı amaçlar.
+            </p>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>Yangının Önlenmesi:</strong> Yangınların nasıl
+                önlenebileceği, yangın güvenliği kültürünün nasıl
+                oluşturulacağı.
+              </li>
+              <li className="ml-4">
+                <strong>Çalışan Davranışları:</strong> Yangın güvenliği
+                davranışlarının, bireylerin günlük işlerinde nasıl alışkanlık
+                haline getirilmesi gerektiği.
+              </li>
+              <li className="ml-4">
+                <strong>Acil Durum Tepkileri ve İletişim:</strong> Yangın anında
+                sakin kalma, doğru iletişim kurma ve hızlı hareket etme
+                yöntemleri.
+              </li>
+            </ul>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            5. Yangın Güvenliği Farkındalık Eğitimi
-          </h2>
-          <p className="text-justify mt-2">
-            Bu tür eğitimler, özellikle büyük kurumlar veya kamu alanlarında
-            çalışan bireyler için uygundur ve herkesin yangın güvenliği
-            konusunda farkındalığını artırmayı amaçlar.
-          </p>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>Yangının Önlenmesi:</strong> Yangınların nasıl
-              önlenebileceği, yangın güvenliği kültürünün nasıl oluşturulacağı.
-            </li>
-            <li className="ml-4">
-              <strong>Çalışan Davranışları:</strong> Yangın güvenliği
-              davranışlarının, bireylerin günlük işlerinde nasıl alışkanlık
-              haline getirilmesi gerektiği.
-            </li>
-            <li className="ml-4">
-              <strong>Acil Durum Tepkileri ve İletişim:</strong> Yangın anında
-              sakin kalma, doğru iletişim kurma ve hızlı hareket etme
-              yöntemleri.
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              6. Özel Durumlar için Yangın Güvenliği Eğitimi
+            </h2>
+            <p className="text-justify mt-2">
+              Sektörel risklere ve özel durumlardaki yangın güvenliği
+              ihtiyaçlarına yönelik eğitimlerdir. Örneğin:
+            </p>
+            <ul className="list-disc list-inside mt-2">
+              <li className="ml-4">
+                <strong>Kimyasal Yangınlar ve Tehlikeli Maddeler:</strong> Kimya
+                sektöründe çalışanlar için tehlikeli maddelerle ilgili yangın
+                güvenliği eğitimi.
+              </li>
+              <li className="ml-4">
+                <strong>Elektrik Yangınları:</strong> Elektriksel yangınların
+                nasıl önleneceği ve bu tür yangınlara nasıl müdahale edileceği.
+              </li>
+              <li className="ml-4">
+                <strong>İnşaat Sektörü Yangın Güvenliği Eğitimi:</strong> İnşaat
+                alanlarında yangın güvenliğinin sağlanması, yangın riski
+                oluşturabilecek unsurların nasıl kontrol edileceği.
+              </li>
+            </ul>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            6. Özel Durumlar için Yangın Güvenliği Eğitimi
-          </h2>
-          <p className="text-justify mt-2">
-            Sektörel risklere ve özel durumlardaki yangın güvenliği
-            ihtiyaçlarına yönelik eğitimlerdir. Örneğin:
-          </p>
-          <ul className="list-disc list-inside mt-2">
-            <li className="ml-4">
-              <strong>Kimyasal Yangınlar ve Tehlikeli Maddeler:</strong> Kimya
-              sektöründe çalışanlar için tehlikeli maddelerle ilgili yangın
-              güvenliği eğitimi.
-            </li>
-            <li className="ml-4">
-              <strong>Elektrik Yangınları:</strong> Elektriksel yangınların
-              nasıl önleneceği ve bu tür yangınlara nasıl müdahale edileceği.
-            </li>
-            <li className="ml-4">
-              <strong>İnşaat Sektörü Yangın Güvenliği Eğitimi:</strong> İnşaat
-              alanlarında yangın güvenliğinin sağlanması, yangın riski
-              oluşturabilecek unsurların nasıl kontrol edileceği.
-            </li>
-          </ul>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">
+              Eğitimlerin Düzenli Aralıklarla Yenilenmesi
+            </h2>
+            <p className="text-justify mt-2">
+              Yangın güvenliği eğitimi, sadece başlangıçta değil, belirli
+              periyotlarla (yılda bir veya iki) tekrarlanmalıdır. Çalışanlar ve
+              diğer katılımcılar, yangın güvenliği becerilerini her zaman güncel
+              tutmalıdır.
+            </p>
 
-          <h2 className="text-xl font-semibold text-red-600 mt-6">
-            Eğitimlerin Düzenli Aralıklarla Yenilenmesi
-          </h2>
-          <p className="text-justify mt-2">
-            Yangın güvenliği eğitimi, sadece başlangıçta değil, belirli
-            periyotlarla (yılda bir veya iki) tekrarlanmalıdır. Çalışanlar ve
-            diğer katılımcılar, yangın güvenliği becerilerini her zaman güncel
-            tutmalıdır.
-          </p>
-
-          <h2 className="text-xl font-semibold text-red-600 mt-6">Sonuç</h2>
-          <p className="text-justify mt-2">
-            Yangın güvenliği eğitimi, hayat kurtarıcı olabilir ve bu eğitimlerin
-            doğru, kapsamlı ve sürekli yapılması önemlidir. Eğitim türlerinin
-            içeriği, katılımcıların görevlerine ve ortamın gereksinimlerine göre
-            özelleştirilmeli ve gerçekçi tatbikatlarla pekiştirilmelidir.
-          </p>
+            <h2 className="text-xl font-semibold text-red-600 mt-6">Sonuç</h2>
+            <p className="text-justify mt-2">
+              Yangın güvenliği eğitimi, hayat kurtarıcı olabilir ve bu
+              eğitimlerin doğru, kapsamlı ve sürekli yapılması önemlidir. Eğitim
+              türlerinin içeriği, katılımcıların görevlerine ve ortamın
+              gereksinimlerine göre özelleştirilmeli ve gerçekçi tatbikatlarla
+              pekiştirilmelidir.
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
       <Footer />
     </div>
   );

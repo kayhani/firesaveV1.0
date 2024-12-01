@@ -17,16 +17,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 // Tip tanımını güncelle (service'i kaldır)
-type OfferList = OfferCards & { 
-  paymentTerm: PaymentTermTypes 
-} & { 
-  creator: Users 
-} & { 
-  creatorIns: Institutions 
-} & { 
-  recipient: Users 
+type OfferList = OfferCards & {
+  paymentTerm: PaymentTermTypes;
 } & {
-  recipientIns: Institutions
+  creator: Users;
+} & {
+  creatorIns: Institutions;
+} & {
+  recipient: Users;
+} & {
+  recipientIns: Institutions;
 };
 
 const columns = [
@@ -121,12 +121,12 @@ const renderRow = (item: OfferList) => (
     </td>
     {/* <td className="hidden md:table-cell">{item.expiryDate}</td> */}
     {/* <td className="hidden md:table-cell">{item.servicesOffered}</td> */}
-    <td className="hidden md:table-cell">
+    {/* <td className="hidden md:table-cell">
       {Number(item.amount).toLocaleString("tr-TR", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}
-    </td>
+    </td> */}
     <td className="hidden md:table-cell">{item.status}</td>
     <td>
       <div className="flex items-center gap-2">
@@ -220,7 +220,7 @@ const OfferListPage = async ({
       skip: ITEM_PER_PAGE * (p - 1),
     }),
     prisma.offerCards.count(),
-]);
+  ]);
 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
