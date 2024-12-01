@@ -5,7 +5,12 @@
  */
 
 export const publicRoutes = [
-    "/"
+    "/",
+    "/landpage/about",
+    "/landpage/analytics",
+    "/landpage/consultancy",
+    "/landpage/education",
+    "/landpage/services",
 ];
 
 /**
@@ -18,6 +23,7 @@ export const authRoutes = [
     "/login",
     "/register",
     "/error",
+    
 ];
 
 

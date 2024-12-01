@@ -36,7 +36,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landscape/education"
+                  href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Güvenlik Eğitimleri
@@ -44,7 +44,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landscape/analytics"
+                  href="/landpage/analytics#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Risk Analizi
@@ -52,7 +52,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landscape/concultancy"
+                  href="/landpage/concultancy#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Acil Durum Danışmanlığı
@@ -65,7 +65,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="/landpage/education"
+                  href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Temel Yangın Güvenliği Eğitimi
@@ -73,7 +73,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landpage/education"
+                  href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Yangın Söndürme Eğitimi
@@ -81,7 +81,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landpage/education"
+                  href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
                   İleri Seviye Yangın Güvenliği Eğitimi
@@ -89,7 +89,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landpage/education"
+                  href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Yangın Tatbikatı Eğitimi
@@ -97,7 +97,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landpage/education"
+                  href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Yangın Güvenliği Farkındalık Eğitimi
@@ -105,7 +105,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/landpage/education"
+                  href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Özel Durumlar için Yangın Güvenliği Eğitimi
@@ -118,7 +118,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="/landpage/about"
+                  href="/landpage/about#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Hakkımızda
