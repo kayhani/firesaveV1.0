@@ -253,8 +253,8 @@ model DeviceFeatures {
   id   String @id @default(cuid())
   name String
 
-  deviceTypeId  String
-  deviceType    DeviceTypes @relation(fields: [deviceTypeId], references: [id]) // İlişki Tanımı
+  deviceTypeId String
+  deviceType   DeviceTypes @relation(fields: [deviceTypeId], references: [id]) // İlişki Tanımı
 
   Devices Devices[]
 
@@ -267,7 +267,6 @@ model MaintenanceCards {
   maintenanceDate     DateTime @default(now())
   nextMaintenanceDate DateTime
 
-  
   deviceId String
   device   Devices @relation(fields: [deviceId], references: [id]) // İlişki Tanımı
 
@@ -289,7 +288,7 @@ model MaintenanceCards {
   customerInsId String
   customerIns   Institutions @relation("CustomerIns", fields: [customerInsId], references: [id]) // İlişki Tanımı
 
-  details    String?
+  details String?
 
   MaintenanceSub MaintenanceSub[]
 }
@@ -297,15 +296,13 @@ model MaintenanceCards {
 model MaintenanceSub {
   id String @id @default(cuid())
 
-  maintenanceCardId    String
-  maintenanceCard      MaintenanceCards @relation(fields: [maintenanceCardId], references: [id]) // İlişki Tanımı
+  maintenanceCardId String
+  maintenanceCard   MaintenanceCards @relation(fields: [maintenanceCardId], references: [id]) // İlişki Tanımı
 
   operationId String
   opreation   Operations @relation(fields: [operationId], references: [id]) // İlişki Tanımı
 
-  detail      String?
-
-
+  detail String?
 }
 
 //Bakım sırasında kontrol edilen şeyler bunları Serkan yazacak 15-20 tane
@@ -319,19 +316,15 @@ model Operations {
   MaintenanceSub MaintenanceSub[]
 }
 
-
-
 //Teklif Kartı, kim tarafından kime verilmiş tüm detayları tutyor
 model OfferCards {
   id           String   @id @default(cuid())
   offerDate    DateTime @default(now())
   validityDate DateTime
- 
 
   paymentTermId String
   paymentTerm   PaymentTermTypes @relation(fields: [paymentTermId], references: [id]) // İlişki Tanımı
 
-  
   status OfferStatus
 
   creatorId String
@@ -363,7 +356,6 @@ model OfferSub {
   unitPrice Decimal
   size      Decimal
   detail    String?
-
 }
 
 //Teklifte sunulan hizmetin başlıkları Örneğin Rutin Bakım, Eğitim, Danışmanlık, Ürün Satışı gibi
@@ -496,12 +488,12 @@ model Announcements {
 }
 
 model Teams {
-  id            String          @id @default(cuid())
-  name          String
-  TeamsMemebers TeamsMemebers[]
+  id           String         @id @default(cuid())
+  name         String
+  TeamsMembers TeamsMembers[]
 }
 
-model TeamsMemebers {
+model TeamsMembers {
   id               String        @id @default(cuid())
   firstName        String
   lastName         String

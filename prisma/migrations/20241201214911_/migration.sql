@@ -346,7 +346,7 @@ CREATE TABLE "Teams" (
 );
 
 -- CreateTable
-CREATE TABLE "TeamsMemebers" (
+CREATE TABLE "TeamsMembers" (
     "id" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
@@ -359,11 +359,11 @@ CREATE TABLE "TeamsMemebers" (
     "registrationDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "institutionId" INTEGER NOT NULL,
 
-    CONSTRAINT "TeamsMemebers_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "TeamsMembers_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "_TeamsToTeamsMemebers" (
+CREATE TABLE "_TeamsToTeamsMembers" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
@@ -387,10 +387,10 @@ CREATE UNIQUE INDEX "Devices_serialNumber_key" ON "Devices"("serialNumber");
 CREATE UNIQUE INDEX "Devices_qrcode_key" ON "Devices"("qrcode");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_TeamsToTeamsMemebers_AB_unique" ON "_TeamsToTeamsMemebers"("A", "B");
+CREATE UNIQUE INDEX "_TeamsToTeamsMembers_AB_unique" ON "_TeamsToTeamsMembers"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_TeamsToTeamsMemebers_B_index" ON "_TeamsToTeamsMemebers"("B");
+CREATE INDEX "_TeamsToTeamsMembers_B_index" ON "_TeamsToTeamsMembers"("B");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -540,7 +540,7 @@ ALTER TABLE "Announcements" ADD CONSTRAINT "Announcements_recipientId_fkey" FORE
 ALTER TABLE "Announcements" ADD CONSTRAINT "Announcements_recipientInsId_fkey" FOREIGN KEY ("recipientInsId") REFERENCES "Institutions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_TeamsToTeamsMemebers" ADD CONSTRAINT "_TeamsToTeamsMemebers_A_fkey" FOREIGN KEY ("A") REFERENCES "Teams"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_TeamsToTeamsMembers" ADD CONSTRAINT "_TeamsToTeamsMembers_A_fkey" FOREIGN KEY ("A") REFERENCES "Teams"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_TeamsToTeamsMemebers" ADD CONSTRAINT "_TeamsToTeamsMemebers_B_fkey" FOREIGN KEY ("B") REFERENCES "TeamsMemebers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_TeamsToTeamsMembers" ADD CONSTRAINT "_TeamsToTeamsMembers_B_fkey" FOREIGN KEY ("B") REFERENCES "TeamsMembers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
