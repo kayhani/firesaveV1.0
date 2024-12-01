@@ -4,6 +4,7 @@ import UserCard from "@/components/UserCard";
 import ProviderMaintChart from "@/components/ProviderMaintChart";
 import EventCalendar from "@/components/EventCalendar";
 import Announcements from "@/components/Announcements";
+import ProviderOfferChartContainer from "@/components/ProviderOfferChartContainer";
 
 const LowProviderPage = () => {
   return (
@@ -12,16 +13,16 @@ const LowProviderPage = () => {
       <div className="w-full lg:w-2/3">
         {/* USER CARDS */}
         <div className="flex gap-4 justify-between flex-wrap">
-          <UserCard type="tekliflerim" link="" />
-          <UserCard type="bekleyen" link="" />
-          <UserCard type="yaklasanrandevularim" link="" />
-          <UserCard type="bakimlarim" link="" />
+              <UserCard type="tekliflerimm" link="/list/offers"/>
+              <UserCard type="bekleyen" link="/list/offers"/>
+              <UserCard type="yaklasanrandevularim" link="/list/events"/>
+              <UserCard type="bakimlarimm" link="/list/maintenances"/>
         </div>
         {/* MIDDLE CHARTS */}
         <div className="flex gap-4 flex-col lg:flex-row">
           {/* PROVİDER OFFER CHART */}
           <div className="w-full lg:w-1/3 h-[450px]">
-            <ProviderOfferChart />
+            <ProviderOfferChartContainer />
           </div>
           {/* LAST OFFER CHART CHART */}
           <div className="w-full lg:w-2/3 h-[450px]">

@@ -10,35 +10,47 @@ import {
   OfferCards,
   PaymentTermTypes,
   Services,
+  OfferSub,
 } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+
+// Tip tanımlamasını buraya ekleyin
+type OfferWithRelations = OfferCards & {
+  paymentTerm: PaymentTermTypes;
+  OfferSub: (OfferSub & {
+      service: Services;
+  })[];
+  creator: Users;
+  creatorIns: Institutions;
+  recipient: Users;
+  recipientIns: Institutions;
+}
+
 
 const SingleOfferPage = async ({
   params: { id },
 }: {
   params: { id: string };
 }) => {
-  const offerId = id; // veya Number(id);
-  const offer:
-    | (OfferCards & {
-        paymentTerm: PaymentTermTypes;
-        service: Services;
-        creator: Users;
-        creatorIns: Institutions;
-        recipient: Users;
-        recipientIns: Institutions;
-      })
-    | null = await prisma.offerCards.findUnique({
+  const offerId = id;
+  
+  // Sorguyu bu şekilde güncelleyin
+  const offer: OfferWithRelations | null = await prisma.offerCards.findUnique({
     where: { id: offerId },
     include: {
-      paymentTerm: true, // Bu kısmı ekleyerek `role` ilişkisini dahil ediyoruz
-      service: true,
-      creator: true,
-      creatorIns: true,
-      recipient: true,
-      recipientIns: true,
+        paymentTerm: true,
+        OfferSub: {
+            include: {
+                service: true
+            }
+        },
+        creator: true,
+        creatorIns: true,
+        recipient: true,
+        recipientIns: true,
     },
   });
 
@@ -162,7 +174,38 @@ const SingleOfferPage = async ({
                 </span>
               </div>
             </div>
+            {/* CARD */}
+            {/* <div className="bg-lamaPurpleLight p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]"> */}
+            {/* <div className="bg-lamaPurpleLight p-4 rounded-md w-full xl:w-2/5 flex flex-col gap-4">
 
+              <Image
+                src="/singleBranch.png"
+                alt=""
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+              <div className="">
+                <h1 className="text-md font-semibold">Teklif İletilen Firma</h1>
+                <span className="text-sm text-gray-400">Uzay Mühendislik A.Ş.</span>
+              </div>
+            </div> */}
+            {/* CARD */}
+            {/* <div className="bg-lamaSkyLight p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]"> */}
+            {/* <div className="bg-lamaPurpleLight p-4 rounded-md w-full xl:w-2/5 flex flex-col gap-4">
+
+              <Image
+                src="/singleLesson.png"
+                alt=""
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+              <div className="">
+                <h1 className="text-md font-semibold">Teklif Tarihi</h1>
+                <span className="text-sm text-gray-400">10/12/2024</span>
+              </div>
+            </div> */}
             {/* CARD */}
             <div className="bg-lamaYellow p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[100%]">
               {/* <div className="bg-lamaPurpleLight p-4 rounded-md w-full xl:w-2/5 flex flex-col gap-4"> */}
@@ -196,7 +239,11 @@ const SingleOfferPage = async ({
               <div className="">
                 <h1 className="text-md font-semibold">Tutar</h1>
                 <span className="text-sm text-gray-400">
-                  {offer.amount.toFixed(2)}
+                  {offer.OfferSub.reduce((total, sub) => 
+                      total + (Number(sub.unitPrice) * Number(sub.size)), 
+                      0
+                    ).toFixed(2)}
+
                 </span>
               </div>
             </div>

@@ -5,43 +5,32 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import RoleSelect from "@/components/RoleSelect";
+import InstitutionSelect from "@/components/InstitutionSelect";
 
 const schema = z.object({
-  // id: z
-  //   .string()
-  //   .min(3, { message: "KUllanıcı ID min 3 karakter uzunluğunda olmalı!" })
-  //   .max(20, { message: "KUllanıcı ID maks 20 karakter uzunluğunda olmalı!" }),
-  userName: z
-    .string()
+  userName: z.string()
     .min(3, { message: "Kullanıcı Adı min 3 karakter uzunluğunda olmalı!" })
-    .max(20, { message: "KUllanıcı Adı maks 20 karakter uzunluğunda olmalı!" }),
-  password: z
-    .string()
-    .min(8, { message: "Password en az 8 karakter uzunluğunda olmalı!" }),
-  firstName: z
-    .string()
-    .min(1, { message: "Bu alan boş geçilemez!" }),
-  lastName: z
-    .string()
-    .min(1, { message: "Bu alan boş geçilemez!" }),
-  bloodType: z
-  .enum(["A+", "A-", "B+", "B-", "AB+", "AB-","0+", "0-"], { message: "Bu alan boş geçilemez!" }),  
-  birthday: z.
-    date({ message: "Bu alan boş geçilemez!" }),
-  sex: z
-    .enum(["male", "female", "other"], { message: "Bu alan boş geçilemez!" }),
+    .max(20, { message: "Kullanıcı Adı maks 20 karakter uzunluğunda olmalı!" }),
   email: z.string().email({ message: "Geçersiz e-posta!" }),
-  phoneNumber: z.string().min(1, { message: "Bu alan boş geçilemez!" }),
-  registrationDate: z.string().min(1, { message: "Bu alan boş geçilemez!" }),
-  organizationId: z
-    .string().min(1, { message: "Bu alan boş geçilemez!" }),
-  organizationName: z
-    .string().min(1, { message: "Bu alan boş geçilemez!" }),
-  role: z
-  .enum(["admin", "customerI", "customerII", "providerI", "providerII"], { message: "Bu alan boş geçilemez!" }),
-  // address: z.string().min(1, { message: "Bu alan boş geçilemez!" }),
-  photo: z.instanceof(File, { message: "Bu alan boş geçilemez!" }),
-  
+  password: z.string()
+    .min(8, { message: "Şifre en az 8 karakter uzunluğunda olmalı!" }),
+  firstName: z.string().min(1, { message: "Ad alanı zorunludur" }),  // required olarak değiştirildi
+  lastName: z.string().min(1, { message: "Soyad alanı zorunludur" }),  // required olarak değiştirildi
+  bloodType: z.enum(["ARhP", "ARhN", "BRhP", "BRhN", "ABRhP", "ABRhN", "ORhP", "ORhN"]).optional(),
+  birthday: z.string().optional(),
+  sex: z.enum(["Erkek", "Kadin", "Diger"]).optional(),
+  phone: z.string().optional(),
+  photo: z.any().optional(),  // File validation'ı kaldırıldı
+  institutionId: z.string().min(1, { message: "Kurum seçimi zorunludur!" }),
+  roleId: z.string().min(1, { message: "Rol seçimi zorunludur!" }),
+}).refine((data) => {
+  // Ek validation kuralları ekleyebiliriz
+  return true;
+}, {
+  message: "Form validation hatası"
 });
 
 type Inputs = z.infer<typeof schema>;
@@ -53,6 +42,9 @@ const UserForm = ({
   type: "create" | "update";
   data?: any;
 }) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -61,209 +53,258 @@ const UserForm = ({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-  });
+  
+
+  // Form submit öncesi validation hatalarını görelim
+  const onSubmit = async (formData: Inputs) => {
+    console.log("Form Submit Started");
+    console.log("Form Data:", formData);
+    console.log("Form Errors:", errors);
+
+    try {
+      setLoading(true);
+
+      const submitData = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value instanceof File) {
+          submitData.append(key, value);
+        } else if (value !== undefined && value !== null) {
+          submitData.append(key, String(value));
+        }
+        console.log(`${key}:`, value); // Her bir form alanının değerini görelim
+      });
+
+      console.log("Submitting to API...");
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        body: submitData,
+      });
+
+      console.log("API Response:", response);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error:', errorText);
+        throw new Error('Kullanıcı kaydı başarısız oldu: ' + errorText);
+      }
+
+      router.refresh();
+      router.push('/list/users');
+    } catch (error) {
+      console.error('Submission Error:', error);
+      alert('Kullanıcı kaydı sırasında bir hata oluştu!');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // handleSubmit'in çalışıp çalışmadığını kontrol edelim
+  console.log("Form Component Rendered");
+
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">Yeni Kullanıcı Oluştur</h1>
-      <span className="text-xs text-gray-400 font-medium">
-        Kimlik Doğrulama Bilgileri
-      </span>
-      <div className="flex justify-between flex-wrap gap-4">
-        {/* <InputField
-          label="Kullaıcı ID"
-          name="id"
-          defaultValue={data?.id}
-          register={register}
-          error={errors?.id}
-        /> */}
-        <InputField
-          label="Kullaıcı Adı"
-          name="userName"
-          defaultValue={data?.userName}
-          register={register}
-          error={errors?.userName}
-        />
-        <InputField
-          label="Şifre"
-          name="password"
-          type="password"
-          defaultValue={data?.password}
-          register={register}
-          error={errors?.password}
-        />
-        
-        
-      </div>
-      <span className="text-xs text-gray-400 font-medium">
-        Kişisel Bilgiler
-      </span>
-      <div className="flex justify-between flex-wrap gap-4">
-        <InputField
-          label="Adı"
-          name="firstName"
-          defaultValue={data?.firstName}
-          register={register}
-          error={errors.firstName}
-        />
-        <InputField
-          label="Soyadı"
-          name="lastName"
-          defaultValue={data?.lastName}
-          register={register}
-          error={errors.lastName}
-        />
+    <form className="flex flex-col gap-4 max-w-7xl mx-auto w-full" onSubmit={handleSubmit(onSubmit)}>
+    <h1 className="text-xl font-semibold">Yeni Kullanıcı Oluştur</h1>
 
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Kan Grubu</label>
-          <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("bloodType")}
-            defaultValue={data?.bloodType}
-          >
-            <option value="A+">A Rh Pozitif /A+/</option>
-            <option value="A-"> A Rh Negatif /A-/</option>
-            <option value="B+">B Rh Pozitif /B+/</option>
-            <option value="B-">B Rh Negatif /B+/</option>
-            <option value="AB+">AB Rh Pozitif /AB+/</option>
-            <option value="AB-">AB Rh Negatif /AB+/</option>
-            <option value="0+">0 Rh Pozitif /0+/</option>
-            <option value="0-">0 Rh Negatif /0-/</option>
+    {/* Kimlik Doğrulama Bilgileri */}
+    <div className="space-y-4">
+        <h2 className="text-sm font-medium text-gray-500">Kimlik Doğrulama Bilgileri</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Kullanıcı Adı</label>
+                <input
+                    type="text"
+                    {...register("userName")}
+                    defaultValue={data?.userName}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                />
+                {errors?.userName && (
+                    <span className="text-xs text-red-500">{errors.userName.message}</span>
+                )}
+            </div>
 
-          </select>
-          {errors.bloodType?.message && (
-            <p className="text-xs text-red-400">
-              {errors.bloodType.message.toString()}
-            </p>
-          )}
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Email</label>
+                <input
+                    type="email"
+                    {...register("email")}
+                    defaultValue={data?.email}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                />
+                {errors?.email && (
+                    <span className="text-xs text-red-500">{errors.email.message}</span>
+                )}
+            </div>
 
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Şifre</label>
+                <input
+                    type="password"
+                    {...register("password")}
+                    defaultValue={data?.password}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                />
+                {errors?.password && (
+                    <span className="text-xs text-red-500">{errors.password.message}</span>
+                )}
+            </div>
         </div>
-        <InputField
-          label="Doğum Tarihi"
-          name="birthday"
-          defaultValue={data?.birthday}
-          register={register}
-          error={errors.birthday}
-          type="date"
+    </div>
 
-        />
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Cinsiyet</label>
-          <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("sex")}
-            defaultValue={data?.sex}
-          >
-            <option value="male">Erkek</option>
-            <option value="female">Kadın</option>
-            <option value="other">Diğer</option>
+    {/* Kişisel Bilgiler */}
+    <div className="space-y-4">
+        <h2 className="text-sm font-medium text-gray-500">Kişisel Bilgiler</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Adı</label>
+                <input
+                    type="text"
+                    {...register("firstName")}
+                    defaultValue={data?.firstName}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                />
+                {errors?.firstName && (
+                    <span className="text-xs text-red-500">{errors.firstName.message}</span>
+                )}
+            </div>
 
-          </select>
-          {errors.sex?.message && (
-            <p className="text-xs text-red-400">
-              {errors.sex.message.toString()}
-            </p>
-          )}
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Soyadı</label>
+                <input
+                    type="text"
+                    {...register("lastName")}
+                    defaultValue={data?.lastName}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                />
+                {errors?.lastName && (
+                    <span className="text-xs text-red-500">{errors.lastName.message}</span>
+                )}
+            </div>
 
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Kan Grubu</label>
+                <select
+                    {...register("bloodType")}
+                    defaultValue={data?.bloodType}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                >
+                    <option value="">Seçiniz</option>
+                    <option value="ARhP">A Rh Pozitif (A+)</option>
+                    <option value="ARhN">A Rh Negatif (A-)</option>
+                    <option value="BRhP">B Rh Pozitif (B+)</option>
+                    <option value="BRhN">B Rh Negatif (B-)</option>
+                    <option value="ABRhP">AB Rh Pozitif (AB+)</option>
+                    <option value="ABRhN">AB Rh Negatif (AB-)</option>
+                    <option value="ORhP">0 Rh Pozitif (0+)</option>
+                    <option value="ORhN">0 Rh Negatif (0-)</option>
+                </select>
+                {errors?.bloodType && (
+                    <span className="text-xs text-red-500">{errors.bloodType.message}</span>
+                )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Doğum Tarihi</label>
+                <input
+                    type="date"
+                    {...register("birthday")}
+                    defaultValue={data?.birthday}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                />
+                {errors?.birthday && (
+                    <span className="text-xs text-red-500">{errors.birthday.message}</span>
+                )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Cinsiyet</label>
+                <select
+                    {...register("sex")}
+                    defaultValue={data?.sex}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                >
+                    <option value="">Seçiniz</option>
+                    <option value="Erkek">Erkek</option>
+                    <option value="Kadin">Kadın</option>
+                    <option value="Diger">Diğer</option>
+                </select>
+                {errors?.sex && (
+                    <span className="text-xs text-red-500">{errors.sex.message}</span>
+                )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Telefon</label>
+                <input
+                    type="text"
+                    {...register("phone")}
+                    defaultValue={data?.phone}
+                    className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm"
+                />
+                {errors?.phone && (
+                    <span className="text-xs text-red-500">{errors.phone.message}</span>
+                )}
+            </div>
+        </div>
+    </div>
+
+    {/* Kurum ve Rol Bilgileri */}
+    {/* Kurum ve Rol Bilgileri */}
+<div className="space-y-4">
+    <h2 className="text-sm font-medium text-gray-500">Kurum ve Rol Bilgileri</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
+            <InstitutionSelect 
+                label="Kurum"
+                name="institutionId"
+                register={register}
+                error={errors.institutionId}
+                defaultValue={data?.institutionId}
+            />
         </div>
 
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Rol</label>
-          <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("role")}
-            defaultValue={data?.role}
-          >
-            <option value="admin">Admin</option>
-            <option value="customerI">I. Seviye Müşteri</option>
-            <option value="customerII">II. Seviye Müşteri</option>
-            <option value="providerI">I. Servis Sağlayıcı</option>
-            <option value="providerII">II. Servis Sağlayıcı</option>
-
-
-          </select>
-          {errors.role?.message && (
-            <p className="text-xs text-red-400">
-              {errors.role.message.toString()}
-            </p>
-          )}
-
+        <div className="flex flex-col gap-2">
+            <RoleSelect 
+                register={register}
+                error={errors.roleId}
+                defaultValue={data?.roleId}
+            />
         </div>
-        <InputField
-          label="Email"
-          name="email"
-          defaultValue={data?.email}
-          register={register}
-          error={errors?.email}
-        />
-        <InputField
-          label="Tel"
-          name="phoneNumber"
-          defaultValue={data?.phoneNumber}
-          register={register}
-          error={errors.phoneNumber}
-        />
-        
-        <InputField
-          label="Üyelik Tarihi"
-          name="registrationDate"
-          defaultValue={data?.registrationDate}
-          register={register}
-          error={errors.registrationDate}
-          type="date"
-        />
+    </div>
+</div>
 
+    {/* Fotoğraf Yükleme */}
+    <div className="space-y-4">
+        <h2 className="text-sm font-medium text-gray-500">Fotoğraf</h2>
+        <div className="flex flex-col gap-2">
+            <label className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer" htmlFor="photo">
+                <Image src="/upload.png" alt="" width={28} height={28} />
+                <span>Fotoğraf Yükle</span>
+            </label>
+            <input
+                id="photo"
+                type="file"
+                accept="image/*"
+                {...register("photo")}
+                className="hidden"
+                onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                        // File handling logic
+                    }
+                }}
+            />
         </div>
-      <span className="text-xs text-gray-400 font-medium">
-        Kurum
-      </span>
-      <div className="flex justify-between flex-wrap gap-4">
-        
-        <InputField
-          label="ID"
-          name="organizationId"
-          defaultValue={data?.organizationId}
-          register={register}
-          error={errors.organizationId}
-        />
-        <InputField
-          label="Adı"
-          name="organizationName"
-          defaultValue={data?.organizationName}
-          register={register}
-          error={errors.organizationName}
-        />
-        {/* <InputField
-          label="Adres"
-          name="address"
-          defaultValue={data?.address}
-          register={register}
-          error={errors.address}
-        /> */}
-        
-        
-        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
-          <label
-            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-            htmlFor="img"
-          >
-            <Image src="/upload.png" alt="" width={28} height={28} />
-            <span>Foto Yükleyin</span>
-          </label>
-          <input type="file" id="img" {...register("photo")} className="hidden" />
-          {errors.photo?.message && (
-            <p className="text-xs text-red-400">
-              {errors.photo.message.toString()}
-            </p>
-          )}
-        </div>
-      </div>
-      <button className="bg-blue-400 text-white p-2 rounded-md">
-        {type === "create" ? "Create" : "Update"}
-      </button>
-    </form>
+    </div>
+
+    <button 
+        type="submit"
+        disabled={loading}
+        className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors disabled:opacity-50 mt-4"
+    >
+        {loading ? "Kaydediliyor..." : type === "create" ? "Oluştur" : "Güncelle"}
+    </button>
+</form>
   );
 };
 

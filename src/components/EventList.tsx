@@ -1,40 +1,24 @@
 import prisma from "@/lib/prisma"
 
 const EventList = async ({ dateParam } : { dateParam: string | undefined}) => {
-
-    // const validDateParam = "2024-11-13"; // Geçerli tarih
-    // const invalidDateParam = "invalid_date"; // Geçersiz tarih
-
-
+    // Gelen tarihi doğru parse etme
     const date = dateParam ? new Date(dateParam) : new Date();
 
     if (isNaN(date.getTime())) {
         console.error("Geçersiz bir tarih: ", dateParam);
-        return []; // veya uygun bir hata mesajı dönebilir
+        return []; 
     }
 
-    
+    // Günün başlangıç ve bitiş saatlerini ayarlama
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0); 
 
-    // const data = await prisma.appointments.findMany ({
-
-    //     where: {
-    //         start: {
-    //             gte: new Date(date.setHours(0,0,0,0)),
-    //             lte: new Date(date.setHours(23, 59, 59, 999)),
-    //         },
-    //     },
-
-    // });
-
-    const today = new Date();
-    const startOfDay = new Date(today);
-    startOfDay.setHours(0, 0, 0, 0); // Gün başlama saati
-
-    const endOfDay = new Date(today);
-    endOfDay.setHours(23, 59, 59, 999); // Gün bitiş saati
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999); 
 
     console.log('Start of Day:', startOfDay);
     console.log('End of Day:', endOfDay);
+    console.log('Seçilen tarih:', date);
 
     const data = await prisma.appointments.findMany({
         where: {
@@ -53,11 +37,10 @@ const EventList = async ({ dateParam } : { dateParam: string | undefined}) => {
               <div className="flex items-center justify-between">
                 <h1 className="font-semibold text-gray-600">{event.tittle}</h1>
                 <span className="text-gray-300 text-xs">
-                    {event.start.toLocaleTimeString("en-UK", {
+                    {event.start.toLocaleTimeString("tr-TR", {
                         hour: "2-digit",
                         minute: "2-digit",
                         hour12: false,
-
                     })}
                 </span>
               </div>
@@ -66,6 +49,4 @@ const EventList = async ({ dateParam } : { dateParam: string | undefined}) => {
           ));
 };
     
-
-
-export default EventList 
+export default EventList

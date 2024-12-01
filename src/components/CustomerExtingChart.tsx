@@ -7,34 +7,29 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+
+const CustomerExtingChart = ({a,p}:{a:number, p:number}) => {
 const data = [
   {
     name: "Toplam",
-    count: 138,
+    count: a+p,
     fill: "white",
   },
   {
     name: "Aktif",
-    count: 85,
+    count: a,
     fill: "#EA4C4C",
   },
   {
     name: "Pasif",
-    count: 53,
+    count: p,
     fill: "#FAE27C",
   },
 ];
 
-const CustomerExtingChart = () => {
+
   return (
-    <div className="bg-white rounded-xl w-full h-full p-4">
-      {/* TITLE */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Cihazlarım</h1>
-        <Image src="/moreDark.png" alt="" width={20} height={20} />
-      </div>
-      {/* CHART */}
-      <div className="relative w-full h-[75%]">
+    <div className="relative w-full h-[75%]">
         <ResponsiveContainer>
           <RadialBarChart
             cx="50%"
@@ -48,27 +43,14 @@ const CustomerExtingChart = () => {
           </RadialBarChart>
         </ResponsiveContainer>
         <Image
-          src="/fire_extingusher.jpg"
+          src="/black-fire-extinguisher.png"
           alt=""
-          width={50}
-          height={50}
+          width={75}
+          height={75}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         />
       </div>
-      {/* BOTTOM */}
-      <div className="flex justify-center gap-16">
-        <div className="flex flex-col gap-1">
-          <div className="w-5 h-5 bg-lamaSky rounded-full" />
-          <h1 className="font-bold">1,234</h1>
-          <h2 className="text-xs text-[#000000]-300">Aftif (55%)</h2>
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="w-5 h-5 bg-lamaPurple rounded-full" />
-          <h1 className="font-bold">1,234</h1>
-          <h2 className="text-xs text-[#000000]-300">Pasif (45%)</h2>
-        </div>
-      </div>
-    </div>
+      
   );
 };
 

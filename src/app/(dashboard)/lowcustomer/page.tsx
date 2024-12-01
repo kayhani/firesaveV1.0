@@ -1,5 +1,6 @@
 import Announcements from "@/components/Announcements";
 import CustomerExtingChart from "@/components/CustomerExtingChart";
+import CustomerExtingChartContainer from "@/components/CustomerExtingChartContainer";
 import CustomerLastMaintChart from "@/components/CustomerLastMaintChart";
 import EventCalendar from "@/components/EventCalendar";
 import UserCard from "@/components/UserCard";
@@ -11,17 +12,18 @@ const LowCustomerPage = () => {
       <div className="w-full lg:w-2/3">
         {/* USER CARDS */}
         <div className="flex gap-4 justify-between flex-wrap">
-          <UserCard type="cihazlarim" link="" />
-          <UserCard type="bakimiyaklasan" link="" />
-          <UserCard type="tekliflerim" link="" />
-          <UserCard type="bakimlarim" link="" />
+              <UserCard type="cihazlarim" link="/list/devices"/>
+              <UserCard type="bakimiyaklasan" link="/list/devices"/>
+              <UserCard type="tekliflerim" link="/list/offers"/>
+              <UserCard type="bakimlarim" link="/list/maintenances"/>
+          
         </div>
 
         {/* MIDDLE CHARTS */}
         <div className="flex gap-4 flex-col lg:flex-row">
           {/* PROVİDER OFFER CHART */}
           <div className="w-full lg:w-1/3 h-[450px]">
-            <CustomerExtingChart />
+            <CustomerExtingChartContainer />
           </div>
           {/* LAST MAİNT CHART CHART */}
           <div className="w-full lg:w-2/3 h-[450px]">
