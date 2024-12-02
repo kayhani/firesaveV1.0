@@ -8,7 +8,7 @@ import { ITEM_PER_PAGE } from "@/lib/settings";
 import {
   Institutions,
   Notifications,
-  TeamsMemebers,
+  TeamsMembers,
   MaintenanceCards,
   Appointments,
   IsgMembers,
@@ -22,7 +22,7 @@ import Link from "next/link";
 
 type InstitutionList = Institutions & { users: Users[] } & {
   devices: Devices[];
-} & { offercards: OfferCards[] } & { teamsMemebers: TeamsMemebers[] } & {
+} & { offercards: OfferCards[] } & { teamsMembers: TeamsMembers[] } & {
   maintenanceCards: MaintenanceCards[];
 } & { appointments: Appointments[] } & { cNotifications: Notifications[] } & {
   isgMembers: IsgMembers[];
