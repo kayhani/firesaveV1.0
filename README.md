@@ -1,5 +1,4 @@
-# Lama Dev School Management Dashboard
-
+# FiresafeV1.0
 ## Getting Started
 
 First, run the development server:
