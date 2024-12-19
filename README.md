@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 # FiresafeV1.0
 
@@ -7,6 +8,9 @@
 # FiresafeV1.0
 
 > > > > > > > cbc6924 (son)
+=======
+# FiresafeV1.0
+>>>>>>> 7003318 (son)
 
 ## Getting Started
 
