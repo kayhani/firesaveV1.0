@@ -56,13 +56,13 @@ const Services = () => {
       icon: Shield,
     },
     {
-      title: "Güvenlik Eğitimleri",
+      title: "Eğitimler",
       description:
         "Profesyonel eğitmenler eşliğinde teorik ve uygulamalı eğitimler",
       icon: GraduationCap,
     },
     {
-      title: "Risk Analizi",
+      title: "Yangin Risk Analizi",
       description: "Detaylı risk değerlendirmesi ve güvenlik planlaması",
       icon: ClipboardCheck,
     },
@@ -96,30 +96,34 @@ const Services = () => {
       <Header />
       {/* Services Section */}
       {/* Services Section */}
-      <div className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Hizmetlerimiz</h2>
-            <p className="mt-4 text-gray-500">
-              Güvenliğiniz için kapsamlı çözümler sunuyoruz
-            </p>
-          </div>
-          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <service.icon className="w-12 h-12 text-red-600 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {service.title}
-                </h3>
-                <p className="mt-2 text-gray-500">{service.description}</p>
-              </div>
-            ))}
+      <section id="1" className="p-20">
+        <div className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Hizmetlerimiz
+              </h2>
+              <p className="mt-4 text-gray-500">
+                Güvenliğiniz için kapsamlı çözümler sunuyoruz
+              </p>
+            </div>
+            <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {services.map((service, index) => (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <service.icon className="w-12 h-12 text-red-600 mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {service.title}
+                  </h3>
+                  <p className="mt-2 text-gray-500">{service.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <Footer />
     </div>

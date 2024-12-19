@@ -174,7 +174,7 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-gray-900">
-                Platform Özellikleri
+                Firesafe V1.0 Platform Özellikleri
               </h2>
               <p className="mt-4 text-gray-500">
                 Her iki taraf için de avantajlı çözümler
@@ -241,7 +241,7 @@ const Home = () => {
               Hemen Platforma Katılın
             </h2>
             <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-              İster hizmet alın, ister hizmet verin. FireGuard B2B platformu ile
+              İster hizmet alın, ister hizmet verin. Firesafe B2B platformu ile
               tüm yangın güvenliği ihtiyaçlarınızı karşılayın.
             </p>
             <div className="flex gap-4 justify-center">

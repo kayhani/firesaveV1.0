@@ -79,38 +79,10 @@ export default function Header() {
       //window.open("https://web.whatsapp.com/send?phone=05521123668", "_blank");
     } else {
       // WhatsApp is not installed, open WhatsApp Web
-      window.open("https://wa.me/+905521123668?text=urlencodedtext", "_blank");
+      window.open("https://wa.me/+905521123668", "_blank");
     }
   };
-  const services = [
-    {
-      title: "Yangın Güvenlik Sistemleri",
-      description:
-        "Modern yangın algılama ve söndürme sistemleri kurulumu ve bakımı",
-      icon: Shield,
-    },
-    {
-      title: "Güvenlik Eğitimleri",
-      description:
-        "Profesyonel eğitmenler eşliğinde teorik ve uygulamalı eğitimler",
-      icon: GraduationCap,
-    },
-    {
-      title: "Risk Analizi",
-      description: "Detaylı risk değerlendirmesi ve güvenlik planlaması",
-      icon: ClipboardCheck,
-    },
-    {
-      title: "Acil Durum Danışmanlığı",
-      description: "Acil durum ve tahliye planları oluşturma",
-      icon: Users,
-    },
-    {
-      title: "Yazilim",
-      description: "Hizmet alim platformu",
-      icon: Users,
-    },
-  ];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -134,7 +106,7 @@ export default function Header() {
                   Ana Sayfa
                 </a>
                 <a
-                  href="/landpage/services"
+                  href="/landpage/services/#1"
                   className="text-gray-700 hover:text-red-600"
                 >
                   Hizmetler
@@ -168,7 +140,7 @@ export default function Header() {
 
             <div className="hidden md:flex items-center space-x-4">
               <a
-                href="https://wa.me/+905521123668?text=urlencodedtext"
+                href="https://wa.me/+905521123668"
                 className="flex items-center text-black-600 font-semibold"
                 target="_blank"
               >
@@ -194,28 +166,40 @@ export default function Header() {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               <a
-                href="#"
+                href="/"
                 className="block px-3 py-2 text-gray-700 hover:text-red-600"
               >
                 Ana Sayfa
               </a>
               <a
-                href="#"
+                href="/landpage/services/#1"
                 className="block px-3 py-2 text-gray-700 hover:text-red-600"
               >
                 Hizmetler
               </a>
               <a
-                href="#"
+                href="/landpage/educations/#1"
                 className="block px-3 py-2 text-gray-700 hover:text-red-600"
               >
                 Eğitimler
               </a>
               <a
-                href="#"
-                className="block px-3 py-2 text-gray-700 hover:text-red-600"
+                href="/landpage/analytics#1"
+                className="text-gray-700 hover:text-red-600"
               >
-                İletişim
+                Analizler
+              </a>
+              <a
+                href="/landpage/consultancy#1"
+                className="text-gray-700 hover:text-red-600"
+              >
+                Danismanlik
+              </a>
+              <a
+                href="/landpage/about#1"
+                className="text-gray-700 hover:text-red-600"
+              >
+                Hakkimizda
               </a>
             </div>
           </div>
