@@ -37,7 +37,7 @@ const DeviceTypeSelect = ({ defaultValue, register, error, isLoading = false }: 
 
   if (loading || isLoading) {
     return (
-      <div className="flex flex-col gap-2 w-full md:w-1/3">
+      <div className="flex flex-col gap-2 w-full ">
         <label className="text-xs text-gray-500">Cihaz Tipi</label>
         <select disabled className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full bg-gray-100">
           <option>Yükleniyor...</option>
@@ -47,7 +47,7 @@ const DeviceTypeSelect = ({ defaultValue, register, error, isLoading = false }: 
   }
 
   return (
-    <div className="flex flex-col gap-2 w-full md:w-1/3">
+    <div className="flex flex-col gap-2 w-full ">
       <label className="text-xs text-gray-500">Cihaz Tipi</label>
       <select
         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"

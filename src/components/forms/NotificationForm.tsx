@@ -1,319 +1,407 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Device, NotificationType, User, Institution } from "@/lib/types";
-import { toast } from "react-hot-toast";
+// Bu notification (bildirim) formu için detaylı bir döküm yapalım:
+// API Endpoints:
+// /api/users/detail/${creatorId} - Bildirimi oluşturan kişinin detaylarını getiren endpoint
+// /api/devices?serialNumber=${serialNumber} - Cihaz arama endpoint'i
+// /api/notifications - Bildirim oluşturma endpoint'i (POST)
+// /api/notifications/${id} - Bildirim güncelleme endpoint'i (PUT)
 
+// Özel Componentler:
+// InputField - Form inputları için temel input bileşeni
+// UserSelect - Kullanıcı seçimi için dropdown bileşeni
+// InstitutionSelect - Kurum seçimi için dropdown bileşeni
+// NotificationTypeSelect - Bildirim tipi seçimi için dropdown bileşeni
+
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+import toast from 'react-hot-toast';
+import { useDebounce } from 'use-debounce';
+import InputField from "../InputField";
+import UserSelect from "@/components/UserSelect";
+import InstitutionSelect from "@/components/InstitutionSelect";
+import NotificationTypeSelect from "@/components/NotificationTypeSelect";
+
+// Device interface
+interface Device {
+  id: string;
+  serialNumber: string;
+  type: {
+    id: string;
+    name: string;
+  };
+  feature: {
+    id: string;
+    name: string;
+  };
+  location: string;
+}
+
+// Form validation şeması
 const schema = z.object({
-  serialNumber: z
-    .string()
-    .min(1, { message: "Cihaz seri numarası zorunludur!" }),
-  deviceType: z.string().min(1, { message: "Cihaz türü zorunludur!" }),
-  ownerInstitution: z
-    .string()
-    .min(1, { message: "Cihaz sahibi kurum zorunludur!" }),
-  ownerPerson: z
-    .string()
-    .min(1, { message: "Cihaz sorumlu personeli zorunludur!" }),
-  providerInstitution: z
-    .string()
-    .min(1, { message: "Hizmet sağlayıcı kurum zorunludur!" }),
-  providerPerson: z
-    .string()
-    .min(1, { message: "Hizmet sağlayıcı personeli zorunludur!" }),
-  notificationType: z.string().min(1, { message: "Bildirim türü seçilmeli!" }),
-  content: z.string().min(1, { message: "Bildirim içeriği zorunludur!" }),
-  isRead: z.string().default("Okunmadi"),
+  // Oluşturan Kişi ID'si
+  creatorId: z.string().min(1, { message: "Oluşturan kişi ID'si zorunludur" }),
+  creatorInsId: z.string().min(1, { message: "Gönderen kurum seçimi zorunludur" }),
+
+  // Cihaz Bilgileri
+  deviceSerialNumber: z.string().min(1, { message: "Cihaz seri numarası zorunludur" }),
+  deviceId: z.string().min(1, { message: "Cihaz ID zorunludur" }),
+  deviceTypeId: z.string().min(1, { message: "Cihaz tipi ID zorunludur" }),
+
+  // Bildirim İçeriği
+  content: z.string()
+    .min(10, { message: "Bildirim içeriği en az 10 karakter olmalıdır" })
+    .max(500, { message: "Bildirim içeriği en fazla 500 karakter olabilir" }),
+
+  // Bildirim Tipi
+  typeId: z.string().min(1, { message: "Bildirim tipi seçimi zorunludur" }),
+
+  // Alıcı Bilgileri
+  recipientId: z.string().min(1, { message: "Alıcı kullanıcı seçimi zorunludur" }),
+  recipientInsId: z.string().min(1, { message: "Alıcı kurum seçimi zorunludur" }),
+
+  // Bildirim Durumu
+  isRead: z.enum(["Okundu", "Okunmadi"]).default("Okunmadi")
 });
 
-type FormInputs = z.infer<typeof schema>;
+type Inputs = z.infer<typeof schema>;
 
-const NotificationForm = ({
-  type,
-  data,
-}: {
+interface NotificationFormProps {
   type: "create" | "update";
   data?: any;
-}) => {
-  const [device, setDevice] = useState<Device | null>(null);
-  const [notificationTypes, setNotificationTypes] = useState<
-    NotificationType[]
-  >([]);
+}
+
+const NotificationForm = ({ type, data }: NotificationFormProps) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [creatorInfo, setCreatorInfo] = useState<any>(null);
+  const [deviceInfo, setDeviceInfo] = useState<Device | null>(null);
 
   const {
     register,
     handleSubmit,
+    watch,
     setValue,
     formState: { errors },
-    watch,
     reset,
-  } = useForm<FormInputs>({
+  } = useForm<Inputs>({
     resolver: zodResolver(schema),
     defaultValues: {
       isRead: "Okunmadi",
+      ...data,
     },
   });
 
-  const serialNumber = watch("serialNumber");
-  const isRead = watch("isRead");
+  // İzlenen form alanları
+  const selectedCreatorId = watch("creatorId");
+  const deviceSerialNumber = watch("deviceSerialNumber");
+  const selectedRecipientInsId = watch("recipientInsId");
+  const [debouncedSerialNumber] = useDebounce(deviceSerialNumber, 500);
 
+  // Creator ID değiştiğinde bilgileri getir
   useEffect(() => {
-    const fetchNotificationTypes = async () => {
-      try {
-        const response = await fetch("/api/notification-types");
-        if (!response.ok) throw new Error("Bildirim türleri getirilemedi");
-        const data = await response.json();
-        setNotificationTypes(data);
-      } catch (error) {
-        console.error("Bildirim türleri çekilemedi:", error);
-        toast.error("Bildirim türleri getirilemedi");
-      }
-    };
-
-    fetchNotificationTypes();
-  }, []);
-
-  useEffect(() => {
-    const fetchDeviceData = async () => {
-      if (serialNumber?.length > 0) {
-        setLoading(true);
-        try {
-          const response = await fetch(
-            `/api/devices?serialNumber=${serialNumber}`
-          );
-          if (!response.ok) {
-            throw new Error("Cihaz bulunamadı");
-          }
-          const data = await response.json();
-          setDevice(data);
-
-          // Cihaz bilgilerini form state'ine aktarın
-          setValue("deviceType", data.type.name);
-          setValue("ownerInstitution", data.ownerIns.name);
-          setValue("ownerPerson", data.owner.userName);
-          setValue("providerInstitution", data.providerIns.name);
-          setValue("providerPerson", data.provider.userName);
-        } catch (error) {
-          console.error("Cihaz bilgileri çekilemedi:", error);
-          setDevice(null);
-          // Cihaz bilgilerini form state'inden temizleyin
-          setValue("deviceType", "");
-          setValue("ownerInstitution", "");
-          setValue("ownerPerson", "");
-          setValue("providerInstitution", "");
-          setValue("providerPerson", "");
-          toast.error("Cihaz bilgileri getirilemedi");
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    const debounceTimeout = setTimeout(fetchDeviceData, 500);
-    return () => clearTimeout(debounceTimeout);
-  }, [serialNumber, setValue]);
-
-  const onSubmit = async (data: FormInputs) => {
-    if (!device) {
-      toast.error("Lütfen geçerli bir cihaz seçin!");
-      return;
+    if (selectedCreatorId) {
+      fetchCreatorInfo(selectedCreatorId);
     }
+  }, [selectedCreatorId]);
 
-    try {
-      const notificationData = {
-        content: data.content,
-        deviceId: device.id,
-        deviceTypeId: device.typeId,
-        creatorId: device.provider.id,
-        creatorInsId: device.providerIns.id,
-        recipientId: device.owner.id,
-        recipientInsId: device.ownerIns.id,
-        typeId: data.notificationType,
-        isRead: data.isRead,
-      };
+  // Device Serial Number değişimi izleme
+  useEffect(() => {
+    if (debouncedSerialNumber) {
+      fetchDeviceInfo(debouncedSerialNumber);
+    }
+  }, [debouncedSerialNumber]);
 
-      const response = await fetch("/api/notifications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(notificationData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Bildirim oluşturulamadı");
+  // Form yüklendiğinde mevcut verileri doldur
+  useEffect(() => {
+    if (data && type === "update") {
+      reset(data);
+      if (data.creatorId) {
+        fetchCreatorInfo(data.creatorId);
       }
+      if (data.deviceSerialNumber) {
+        fetchDeviceInfo(data.deviceSerialNumber);
+      }
+    }
+  }, [data, type, reset]);
 
-      toast.success("Bildirim başarıyla oluşturuldu!");
-      reset(); // Formu temizle
+  // Creator bilgilerini getir
+  const fetchCreatorInfo = async (creatorId: string) => {
+    try {
+      const response = await fetch(`/api/users/detail/${creatorId}`);
+      if (!response.ok) {
+        throw new Error('Kullanıcı bilgileri alınamadı');
+      }
+      const data = await response.json();
+      setCreatorInfo(data);
+      setValue("creatorInsId", data.institutionId);
+      toast.success('Oluşturan kişi bilgileri yüklendi');
     } catch (error) {
-      console.error("Bildirim kaydedilemedi:", error);
-      toast.error("Bildirim oluşturulamadı");
+      console.error("Creator bilgisi alınamadı:", error);
+      toast.error('Oluşturan kişi bilgileri alınamadı');
     }
   };
 
+  // Cihaz bilgilerini getir
+  const fetchDeviceInfo = async (serialNumber: string) => {
+    if (!serialNumber || serialNumber.length < 3) {
+      setDeviceInfo(null);
+      return;
+    }
+
+    setSearchLoading(true);
+    try {
+      const response = await fetch(`/api/devices?serialNumber=${serialNumber}`);
+      if (!response.ok) {
+        throw new Error('Cihaz bulunamadı');
+      }
+      const data = await response.json();
+      setDeviceInfo(data);
+
+      // Form alanlarını otomatik doldur
+      setValue("deviceId", data.id);
+      setValue("deviceTypeId", data.type.id);
+
+      toast.success('Cihaz bilgileri yüklendi');
+    } catch (error) {
+      console.error("Cihaz bilgisi alınamadı:", error);
+      setDeviceInfo(null);
+      setValue("deviceId", "");
+      setValue("deviceTypeId", "");
+      toast.error('Cihaz bilgileri alınamadı');
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  // Form gönderimi
+  const onSubmit = async (formData: Inputs) => {
+    if (!deviceInfo) {
+      toast.error('Lütfen geçerli bir cihaz seçin');
+      return;
+    }
+
+    const submitPromise = new Promise(async (resolve, reject) => {
+      try {
+        setLoading(true);
+
+        const endpoint = type === "create" ? '/api/notifications' : `/api/notifications/${data?.id}`;
+        const method = type === "create" ? 'POST' : 'PUT';
+
+        const response = await fetch(endpoint, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.text();
+          throw new Error(errorData || 'İşlem başarısız oldu');
+        }
+
+        await response.json();
+        router.refresh();
+        router.push('/list/notifications');
+        resolve('İşlem başarıyla tamamlandı');
+      } catch (error) {
+        console.error('Hata:', error);
+        reject(error);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    toast.promise(submitPromise, {
+      loading: type === "create" ? 'Bildirim kaydediliyor...' : 'Bildirim güncelleniyor...',
+      success: type === "create" ? 'Bildirim başarıyla kaydedildi!' : 'Bildirim başarıyla güncellendi!',
+      error: (err) => `Hata: ${err.message}`
+    });
+  };
+
   return (
-    <form
-      className="flex flex-col gap-4 max-w-7xl mx-auto w-full"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <h1 className="text-xl font-semibold">Bildirim Oluştur</h1>
+    <form className="flex flex-col gap-4 max-w-7xl mx-auto w-full" onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="text-xl font-semibold">
+        {type === "create" ? "Bildirim Oluştur" : "Bildirim Düzenle"}
+      </h1>
+
+      {/* Oluşturan Kişi Bilgileri */}
+      <div className="space-y-4">
+        <h2 className="text-sm font-medium text-gray-500">Oluşturan Kişi Bilgileri</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputField
+            label="Oluşturan Kişi ID"
+            name="creatorId"
+            register={register}
+            error={errors?.creatorId}
+          />
+
+          {creatorInfo && (
+            <>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Oluşturan Kişi</label>
+                <input
+                  type="text"
+                  value={`${creatorInfo.firstName || ''} ${creatorInfo.lastName || ''}`}
+                  className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full bg-gray-50"
+                  disabled
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Oluşturan Kurum</label>
+                <input
+                  type="text"
+                  value={creatorInfo.institution?.name || ''}
+                  className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full bg-gray-50"
+                  disabled
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
 
       {/* Cihaz Bilgileri */}
       <div className="space-y-4">
         <h2 className="text-sm font-medium text-gray-500">Cihaz Bilgileri</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-          {/* Cihaz Seri No Alanı */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="serialNumber">Cihaz Seri No</Label>
+            <label className="text-xs text-gray-500">Cihaz Seri No</label>
             <div className="relative">
-              <Input
-                id="serialNumber"
-                {...register("serialNumber")}
-                placeholder="Cihaz seri numarası giriniz"
-                disabled={loading}
+              <input
+                type="text"
+                {...register("deviceSerialNumber")}
+                className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
               />
-              {loading && (
+              {searchLoading && (
                 <div className="absolute right-2 top-2">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
                 </div>
               )}
             </div>
-            {errors.serialNumber && (
-              <span className="text-xs text-red-500">
-                {errors.serialNumber.message}
-              </span>
+            {errors?.deviceSerialNumber && (
+              <p className="text-xs text-red-400">{errors.deviceSerialNumber.message}</p>
             )}
           </div>
 
-          {/* Cihaz Türü Alanı */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="deviceType">Cihaz Türü</Label>
-            <Input
-              id="deviceType"
-              value={device?.type.name ?? ""}
-              readOnly
-              disabled
-            />
-          </div>
-
-          {/* Cihaz Sahibi Kurum Alanı */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="ownerInstitution">Cihaz Sahibi Kurum</Label>
-            <Input
-              id="ownerInstitution"
-              value={device?.ownerIns.name ?? ""}
-              readOnly
-              disabled
-            />
-          </div>
-
-          {/* Cihaz Sorumlu Personeli Alanı */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="ownerPerson">Cihaz Sorumlu Personeli</Label>
-            <Input
-              id="ownerPerson"
-              value={device?.owner.userName ?? ""}
-              readOnly
-              disabled
-            />
-          </div>
-
-          {/* Cihaz Hizmet Sağlayıcı Kurum Alanı */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="providerInstitution">Hizmet Sağlayıcı Kurum</Label>
-            <Input
-              id="providerInstitution"
-              value={device?.providerIns.name ?? ""}
-              readOnly
-              disabled
-            />
-          </div>
-
-          {/* Cihaz Hizmet Sağlayıcı Personeli Alanı */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="providerPerson">Hizmet Sağlayıcı Personel</Label>
-            <Input
-              id="providerPerson"
-              value={device?.provider.userName ?? ""}
-              readOnly
-              disabled
-            />
-          </div>
+          {deviceInfo && (
+            <>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Cihaz Tipi</label>
+                <input
+                  type="text"
+                  value={deviceInfo.type?.name || ''}
+                  className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full bg-gray-50"
+                  disabled
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Cihaz Özelliği</label>
+                <input
+                  type="text"
+                  value={deviceInfo.feature?.name || ''}
+                  className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full bg-gray-50"
+                  disabled
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs text-gray-500">Konum</label>
+                <input
+                  type="text"
+                  value={deviceInfo.location || ''}
+                  className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full bg-gray-50"
+                  disabled
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Bildirim Detayları */}
+      {/* Bildirim İçeriği */}
       <div className="space-y-4">
-        <h2 className="text-sm font-medium text-gray-500">
-          Bildirim Detayları
-        </h2>
-        <div className="space-y-4">
-          {/* Bildirim Türü Seçimi */}
+        <h2 className="text-sm font-medium text-gray-500">Bildirim İçeriği</h2>
+        <div className="grid grid-cols-1 gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="notificationType">Bildirim Türü</Label>
-            <select
-              id="notificationType"
-              {...register("notificationType")}
-              className="w-full h-10 px-3 py-2 text-sm rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Bildirim türü seçin</option>
-              {notificationTypes.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-            {errors.notificationType && (
-              <span className="text-xs text-red-500">
-                {errors.notificationType.message}
-              </span>
-            )}
-          </div>
-
-          {/* Bildirim İçeriği Textarea */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="content">Bildirim İçeriği</Label>
+            <label className="text-xs text-gray-500">İçerik</label>
             <textarea
-              id="content"
+              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm min-h-[100px] resize-none w-full"
               {...register("content")}
-              className="w-full min-h-[100px] p-2 border rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Bildirim içeriğini giriniz"
             />
-            {errors.content && (
-              <span className="text-xs text-red-500">
-                {errors.content.message}
-              </span>
+            {errors.content?.message && (
+              <p className="text-xs text-red-400">{errors.content.message}</p>
             )}
-          </div>
-
-          {/* Bildirim Durumu Switch */}
-          <div className="flex items-center gap-2">
-            <Switch
-              id="isRead"
-              checked={isRead === "Okundu"}
-              onCheckedChange={(checked) => {
-                setValue("isRead", checked ? "Okundu" : "Okunmadi");
-              }}
-            />
-            <Label htmlFor="isRead" className="text-sm">
-              {isRead === "Okundu" ? "Okundu" : "Okunmadı"}
-            </Label>
           </div>
         </div>
       </div>
 
+      {/* Bildirim Tipi */}
+      <div className="space-y-4">
+        <h2 className="text-sm font-medium text-gray-500">Bildirim Tipi</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <NotificationTypeSelect
+            register={register}
+            error={errors.typeId}
+          />
+        </div>
+      </div>
+
+      {/* Alıcı Bilgileri */}
+      <div className="space-y-4">
+        <h2 className="text-sm font-medium text-gray-500">Alıcı Bilgileri</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InstitutionSelect
+            label="Alıcı Kurum"
+            register={register}
+            name="recipientInsId"
+            error={errors.recipientInsId}
+            defaultValue={data?.recipientInsId}
+            showInstitutionName={true}
+          />
+
+          <UserSelect
+            label="Alıcı Kullanıcı"
+            name="recipientId"
+            register={register}
+            error={errors.recipientId}
+            institutionId={selectedRecipientInsId}
+          />
+        </div>
+      </div>
+
+      {/* Bildirim Durumu */}
+      <div className="space-y-4">
+        <h2 className="text-sm font-medium text-gray-500">Bildirim Durumu</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-xs text-gray-500">Durum</label>
+            <select
+              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+              {...register("isRead")}
+            >
+              <option value="Okunmadi">Okunmadı</option>
+              <option value="Okundu">Okundu</option>
+            </select>
+            {errors.isRead?.message && (
+              <p className="text-xs text-red-400">{errors.isRead.message}</p>
+            )}
+          </div>
+        </div>
+      </div>  {/* Bu div kapanışı eksikti */}
+
+
+      {/* Submit Button */}
       <button
         type="submit"
-        disabled={loading || !device}
+        disabled={loading || !deviceInfo}
         className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors disabled:opacity-50"
       >
-        {loading ? "İşlem yapılıyor..." : "Bildirim Oluştur"}
+        {loading ? "İşlem yapılıyor..." : type === "create" ? "Oluştur" : "Güncelle"}
       </button>
     </form>
   );

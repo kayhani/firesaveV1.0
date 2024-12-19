@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { Building2, FileCheck, BadgeCheck, HandshakeIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { FaWhatsapp } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,6 +68,20 @@ export default function Header() {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
+  const router = useRouter();
+
+  const handleClick = async () => {
+    // Check if WhatApp installed, if yes open whatsapp else open whatsapp web
+
+    if (navigator.userAgent.includes("WhatsApp")) {
+      // WhatsApp is installed
+      window.open(`whatsapp://send?phone=+905521123668`);
+      //window.open("https://web.whatsapp.com/send?phone=05521123668", "_blank");
+    } else {
+      // WhatsApp is not installed, open WhatsApp Web
+      window.open("https://wa.me/+905521123668?text=urlencodedtext", "_blank");
+    }
+  };
   const services = [
     {
       title: "Yangın Güvenlik Sistemleri",
@@ -87,6 +103,11 @@ export default function Header() {
     {
       title: "Acil Durum Danışmanlığı",
       description: "Acil durum ve tahliye planları oluşturma",
+      icon: Users,
+    },
+    {
+      title: "Yazilim",
+      description: "Hizmet alim platformu",
       icon: Users,
     },
   ];
@@ -147,11 +168,12 @@ export default function Header() {
 
             <div className="hidden md:flex items-center space-x-4">
               <a
-                href="tel:112"
-                className="flex items-center text-red-600 font-semibold"
+                href="https://wa.me/+905521123668?text=urlencodedtext"
+                className="flex items-center text-black-600 font-semibold"
+                target="_blank"
               >
-                <Phone className="h-5 w-5 mr-2" />
-                Acil: 112
+                <FaWhatsapp color="green" className="w-7 h-7 md:w-10 md:h-10" />
+                +90 552 112 36 68
               </a>
             </div>
 

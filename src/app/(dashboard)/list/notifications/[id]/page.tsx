@@ -25,26 +25,26 @@ const SingleNotificationPage = async ({
   const notificationId = id; // veya Number(id);
   const notification:
     | (Notifications & {
-        creator: Users;
-        creatorIns: Institutions;
-        recipient: Users;
-        recipientIns: Institutions;
-        type: NotificationTypes;
-        device: Devices;
-        deviceType: DeviceTypes;
-      })
+      creator: Users;
+      creatorIns: Institutions;
+      recipient: Users;
+      recipientIns: Institutions;
+      type: NotificationTypes;
+      device: Devices | null;  // null olabileceğini belirtiyoruz
+      deviceType: DeviceTypes | null;  // null olabileceğini belirtiyoruz
+    })
     | null = await prisma.notifications.findUnique({
-    where: { id: notificationId },
-    include: {
-      creator: true, // Bu kısmı ekleyerek `role` ilişkisini dahil ediyoruz
-      creatorIns: true,
-      recipient: true,
-      recipientIns: true,
-      type: true,
-      device: true,
-      deviceType: true,
-    },
-  });
+      where: { id: notificationId },
+      include: {
+        creator: true, // Bu kısmı ekleyerek `role` ilişkisini dahil ediyoruz
+        creatorIns: true,
+        recipient: true,
+        recipientIns: true,
+        type: true,
+        device: true,
+        deviceType: true,
+      },
+    });
 
   if (!notification) {
     return notFound();
@@ -56,17 +56,9 @@ const SingleNotificationPage = async ({
         {/* TOP */}
         <div className="flex flex-col lg:flex-row gap-4">
           {/* USER INFO CARD */}
+          {/* USER INFO CARD */}
           <div className="bg-lamaPurpleLight py-6 px-4 rounded-md flex-1 flex gap-4">
-            <div className="w-1/3">
-              <Image
-                src="/notification.png"
-                alt=""
-                width={144}
-                height={144}
-                className="w-24 h-24 rounded-full object-cover"
-              />
-            </div>
-            <div className="w-2/3 flex flex-col justify-between gap-4">
+            <div className="w-full flex flex-col justify-between gap-4">
               <div className="flex items-center gap-4">
                 <h1 className="text-xl font-semibold">Bildirim Kartı</h1>
                 {role === "admin" && (
@@ -74,53 +66,51 @@ const SingleNotificationPage = async ({
                     table="notification"
                     type="update"
                     data={{
-                      id: "1",
-                      notificationId: "889",
-                      userId: "007",
-                      userName: "Serkan Korkmaz",
-                      //organizationName: "AAA Yangın Hizmetleri A.Ş",
-                      deviceSerialNumber: "445689",
-                      deviceOwnerId: "868548",
-                      deviceOwner: "BBG Hayvancılık A.Ş.",
-                      message: "xxxx nolu cihazın bakım tarihi yaklaşıyor...",
-                      notificationDate: "24/10/2024",
-                      isRead: "Okundu",
-                      notificationType: "Hatırlatma",
+                      id: notification.id,
+                      creatorId: notification.creator.id,
+                      creatorInsId: notification.creatorIns.id,
+                      recipientId: notification.recipient.id,
+                      recipientInsId: notification.recipientIns.id,
+                      deviceId: notification.device?.id,
+                      deviceSerialNumber: notification.device?.serialNumber,
+                      deviceTypeId: notification.deviceType?.id,
+                      typeId: notification.type.id,
+                      content: notification.content,
+                      isRead: notification.isRead
                     }}
                   />
                 )}
               </div>
-              <p className="text-sm text-gray-500">{notification.content}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Bildirim İçeriği:</span>
+                <span className="text-sm text-gray-500">{notification.content}</span>
+              </div>
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-2/3 flex items-center gap-2">
-                  {/* <Image src="/blood.png" alt="" width={14} height={14} /> */}
-                  <span>Bildirim No: {notification.id}</span>
+                  <span className="text-gray-600">Bildirim No:</span>
+                  <span>{notification.id}</span>
                 </div>
+
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-2/3 flex items-center gap-2">
-                  <Image src="/person.png" alt="" width={14} height={14} />
-                  <span>
-                    {notification.recipient.firstName +
-                      " " +
-                      notification.recipient.lastName}
-                  </span>
+                  <span className="text-gray-600">Bildirim Verilen Kişi:</span>
+                  <span>{notification.recipient.firstName + " " + notification.recipient.lastName}</span>
                 </div>
+
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-2/3 flex items-center gap-2">
-                  <Image
-                    src="/insititution.png"
-                    alt=""
-                    width={14}
-                    height={14}
-                  />
+                  <span className="text-gray-600">Bildirim Verilen Kurum:</span>
                   <span>{notification.recipientIns.name}</span>
                 </div>
+
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-2/3 flex items-center gap-2">
                   <Image src="/phone.png" alt="" width={14} height={14} />
-                  <span> {notification.recipientIns.phone}</span>
+                  <span>{notification.recipientIns.phone}</span>
                 </div>
+
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-2/3 flex items-center gap-2">
                   <Image src="/mail.png" alt="" width={14} height={14} />
                   <span>{notification.recipientIns.email}</span>
                 </div>
+
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-2/3 flex items-center gap-2">
                   <Image src="/address.png" alt="" width={14} height={14} />
                   <span>{notification.recipientIns.address}</span>
@@ -144,7 +134,7 @@ const SingleNotificationPage = async ({
               <div className="">
                 <h1 className="text-md font-semibold">İlgili Cihaz Seri No</h1>
                 <span className="text-sm text-gray-400">
-                  {notification.device.serialNumber}
+                  {notification.device && notification.device.serialNumber}
                 </span>
               </div>
             </div>
@@ -162,7 +152,7 @@ const SingleNotificationPage = async ({
               <div className="">
                 <h1 className="text-md font-semibold">Cihaz Türü</h1>
                 <span className="text-sm text-gray-400">
-                  {notification.deviceType.name}
+                  {notification.deviceType && notification.deviceType.name}
                 </span>
                 <br></br>
                 {/* <span className="text-sm text-gray-400">{notification.deviceFeature.name}</span> */}

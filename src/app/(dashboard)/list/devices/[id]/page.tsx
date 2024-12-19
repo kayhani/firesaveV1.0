@@ -79,30 +79,31 @@ const SingleDevicePage = async ({
                   Yangın Güvenlik Önlemi Kartı
                 </h1>
                 {role === "admin" && (
-                  <FormModal
-                    table="device"
-                    type="update"
-                    data={{
-                      id: "1",
-                      deviceId: "1234567890",
-                      serialNumber: "95958478784",
-                      ownerId: "75",
-                      ownerName: "XXXX Hospital",
-                      address: "Bornova İzmir",
-                      deviceType: "Yangın Tüpü",
-                      feature: "CO2",
-                      respPersonId: ["105", "215"],
-                      respPerson: ["Ayhan Uğur", "Fırat Salmanoğlu"],
-                      manufactureDate: "25/10/2024",
-                      expiryDate: "25/10/2025",
-                      lastInspectionDate: "25/06/2024",
-                      location: "roof",
-                      statuss: "OK",
-                      photo: "/avatar.png",
-                      details: "2mt hortum, üstten basmalı vs",
-                    }}
-                  />
-                )}
+  <FormModal
+    table="device"
+    type="update"
+    id={device.id}  // id prop'unu ekleyelim
+    data={{
+      id: device.id,
+      ownerId: device.ownerId,
+      ownerInstId: device.ownerInstId,
+      serialNumber: device.serialNumber,
+      typeId: device.typeId,
+      featureId: device.featureId,
+      productionDate: new Date(device.productionDate).toISOString().split('T')[0],
+      lastControlDate: new Date(device.lastControlDate).toISOString().split('T')[0],
+      expirationDate: new Date(device.expirationDate).toISOString().split('T')[0],
+      nextControlDate: new Date(device.nextControlDate).toISOString().split('T')[0],
+      location: device.location,
+      currentStatus: device.currentStatus,
+      providerInstId: device.providerInstId,
+      providerId: device.providerId,
+      isgMemberId: device.isgMemberId,
+      details: device.details || "",
+      photo: device.photo || ""
+    }}
+  />
+)}
               </div>
               <p className="text-sm text-gray-500">{device.details}</p>
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">

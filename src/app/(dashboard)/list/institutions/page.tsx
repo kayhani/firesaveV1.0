@@ -22,7 +22,7 @@ import Link from "next/link";
 
 type InstitutionList = Institutions & { users: Users[] } & {
   devices: Devices[];
-} & { offercards: OfferCards[] } & { teamsMembers: TeamsMembers[] } & {
+} & { offercards: OfferCards[] } & { teamsMemebers: TeamsMembers[] } & {
   maintenanceCards: MaintenanceCards[];
 } & { appointments: Appointments[] } & { cNotifications: Notifications[] } & {
   isgMembers: IsgMembers[];

@@ -55,6 +55,10 @@ const LogForm = dynamic(() => import("./forms/LogForm"), {
   loading: () => <p className="text-center py-4">Yükleniyor...</p>,
 });
 
+const OfferRequestForm = dynamic(() => import("./forms/OfferRequestForm"), {
+  loading: () => <p className="text-center py-4">Yükleniyor...</p>,
+});
+
 // Form bileşenlerini mapping objesi
 const forms: {
   [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
@@ -71,6 +75,8 @@ const forms: {
   pinstitution: (type, data) => <PInstitutionForm type={type} data={data} />,
   isgmember: (type, data) => <IsgMemberForm type={type} data={data} />,
   log: (type, data) => <LogForm type={type} data={data} />,
+  offerRequest: (type, data) => <OfferRequestForm type={type} data={data} />,
+
 };
 
 type TableType =
@@ -89,13 +95,16 @@ type TableType =
   | "result"
   | "attendance"
   | "event"
-  | "announcement";
+  | "announcement"
+  | "offerRequest";
 
 interface FormModalProps {
   table: TableType;
   type: "create" | "update" | "delete";
   data?: any;
   id?: string;
+  children?: React.ReactNode; // Bu satırı ekleyin
+
 }
 
 const FormModal = ({ table, type, data, id }: FormModalProps) => {
@@ -109,52 +118,122 @@ const FormModal = ({ table, type, data, id }: FormModalProps) => {
     type === "create"
       ? "bg-lamaYellow"
       : type === "update"
-      ? "bg-lamaSky"
-      : "bg-lamaPurple";
+        ? "bg-lamaSky"
+        : "bg-lamaPurple";
 
   // Silme işlemi
   const handleDelete = async () => {
     if (!id) return;
 
     try {
-        setLoading(true);
-        
-        // URL'i doğru şekilde oluştur
-        const endpoint = table === 'maintenance' 
-            ? 'maintenance-cards' 
-            : `${table}s`;
+      setLoading(true);
 
-        const response = await fetch(`/api/${endpoint}?id=${id}`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+      // Endpoint ve URL yapısı mapping'i
+      const endpointConfig: {
+        [key: string]: {
+          endpoint: string;
+          usePathParam?: boolean;
+        };
+      } = {
+        event: {
+          endpoint: 'appointments',
+          usePathParam: true
+        },
+        maintenance: {
+          endpoint: 'maintenance-cards',
+          usePathParam: false
+        },
+        notification: {
+          endpoint: 'notifications',
+          usePathParam: false
+        },
+        device: {
+          endpoint: 'devices',
+          usePathParam: false
+        },
+        institution: {
+          endpoint: 'institutions',
+          usePathParam: false
+        },
+        offer: {
+          endpoint: 'offers',
+          usePathParam: false
+        },
+        isgmember: {
+          endpoint: 'isgmembers',
+          usePathParam: false
+        },
+        user: {
+          endpoint: 'users',
+          usePathParam: false
+        },
+        customer: {
+          endpoint: 'customers',
+          usePathParam: false
+        },
+        provider: {
+          endpoint: 'providers',
+          usePathParam: false
+        },
+        pinstitution: {
+          endpoint: 'pinstitutions',
+          usePathParam: false
+        },
+        log: {
+          endpoint: 'logs',
+          usePathParam: false
+        },
 
-        // Status 204 ise json parse etmeye çalışma
-        if (response.status === 204) {
-            toast.success("Başarıyla silindi");
-            router.refresh();
-            setOpen(false);
-            return;
+        offerRequest: {
+          endpoint: 'offer-requests',  // Sadece burayı değiştirdik
+          usePathParam: true          // Sadece burayı değiştirdik
+        },
+        // Diğer formlar için varsayılan yapı
+        default: {
+          endpoint: `${table}s`,
+          usePathParam: false
         }
+      };
 
-        const data = await response.json().catch(() => null);
+      // Endpoint konfigürasyonunu al
+      const config = endpointConfig[table] || endpointConfig.default;
 
-        if (!response.ok) {
-            throw new Error(data?.error || 'Silme işlemi başarısız oldu');
+      // URL'i oluştur
+      const url = config.usePathParam
+        ? `/api/${config.endpoint}/${id}`
+        : `/api/${config.endpoint}?id=${id}`;
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
         }
+      });
 
-        toast.success(data?.message || "Başarıyla silindi");
+      // Status 204 ise json parse etmeye çalışma
+      if (response.status === 204) {
+        toast.success("Başarıyla silindi");
         router.refresh();
         setOpen(false);
+        return;
+      }
+
+      const responseData = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(responseData?.error || 'Silme işlemi başarısız oldu');
+      }
+
+      toast.success(responseData?.message || "Başarıyla silindi");
+      router.refresh();
+      setOpen(false);
     } catch (error: any) {
-        console.error("Silme hatası:", error);
-        toast.error(error.message || "Silme işlemi başarısız oldu");
+      console.error("Silme hatası:", error);
+      toast.error(error.message || "Silme işlemi başarısız oldu");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   // Silme formu
   const DeleteForm = () => (
@@ -227,10 +306,10 @@ const FormModal = ({ table, type, data, id }: FormModalProps) => {
             <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center">
               <h2 className="text-lg font-semibold">
                 {type === "create"
-                  ? "Yeni Kayıt"
+                  ? ""
                   : type === "update"
-                  ? "Kaydı Düzenle"
-                  : "Kaydı Sil"}
+                    ? "Kaydı Düzenle"
+                    : "Kaydı Sil"}
               </h2>
               <button
                 onClick={() => setOpen(false)}

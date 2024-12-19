@@ -129,7 +129,9 @@ model Users {
 
   CreatorAnnouncements Announcements[] @relation("AnnCreator")
 
-  RecipientAnnouncements Announcements[] @relation("AnnRecipient")
+
+  OfferRequests OfferRequests[] @relation("Creator")
+
 }
 
 // ŞİRKETLER
@@ -165,9 +167,10 @@ model Institutions {
 
   CreatorAnnouncements Announcements[] @relation("AnnCreatorIns")
 
-  RecipientAnnouncements Announcements[] @relation("AnnRecipientInst")
 
   IsgMembers IsgMembers[]
+
+  OfferRequests OfferRequests[] @relation("CreatorIns")
 }
 
 //ROLLER Admin- I. Seviye Müşteri- II. Seviye Müşteri- I. Seviye Hizmet Sağlayıcı-  II. Seviye Hizmet Sağlayıcı
@@ -358,12 +361,48 @@ model OfferSub {
   detail    String?
 }
 
+//Teklif Kartı, kim tarafından kime verilmiş tüm detayları tutyor
+model OfferRequests {
+  id           String   @id @default(cuid())
+  start        DateTime @default(now())
+  end          DateTime
+
+  status RequestStatus
+
+  creatorId String
+  creator   Users  @relation("Creator", fields: [creatorId], references: [id]) // İlişki Tanımı
+
+  creatorInsId String
+  creatorIns   Institutions @relation("CreatorIns", fields: [creatorInsId], references: [id]) // İlişki Tanımı
+
+  details      String
+
+  RequestSub  RequestSub[]
+}
+
+model RequestSub {
+  id String @id @default(cuid())
+
+  requiredDate  DateTime
+
+  offerRequestId String
+  offerRequest   OfferRequests @relation(fields: [offerRequestId], references: [id]) // İlişki Tanımı
+
+  serviceId String
+  service   Services @relation(fields: [serviceId], references: [id]) // İlişki Tanımı
+
+  quantity  Decimal
+  detail    String?
+}
+
 //Teklifte sunulan hizmetin başlıkları Örneğin Rutin Bakım, Eğitim, Danışmanlık, Ürün Satışı gibi
 model Services {
   id   String @id @default(cuid())
   name String
 
   OfferSub OfferSub[]
+
+  RequestSub RequestSub[]
 }
 
 //Teklif kartındaki ödeme türleri peşin, 3 taksit, 6 taksit, çekle vs
@@ -397,11 +436,11 @@ model Notifications {
   typeId String
   type   NotificationTypes @relation(fields: [typeId], references: [id]) // İlişki Tanımı
 
-  deviceId String
-  device   Devices @relation(fields: [deviceId], references: [id]) // İlişki Tanımı
+  deviceId String?
+  device   Devices? @relation(fields: [deviceId], references: [id]) // İlişki Tanımı
 
-  deviceTypeId String
-  deviceType   DeviceTypes @relation(fields: [deviceTypeId], references: [id]) // İlişki Tanımı
+  deviceTypeId String?
+  deviceType   DeviceTypes? @relation(fields: [deviceTypeId], references: [id]) // İlişki Tanımı
 }
 
 //Bildirim Türleri Hatırlatma Uyarı vs
@@ -434,6 +473,7 @@ model Appointments {
   recipientIns   Institutions @relation("AppRecipientIns", fields: [recipientInsId], references: [id]) // İlişki Tanımı
 }
 
+//şimdi eklendi
 // Loglar
 model Logs {
   id   String   @id @default(cuid())
@@ -480,11 +520,7 @@ model Announcements {
   creatorInsId String
   creatorIns   Institutions @relation("AnnCreatorIns", fields: [creatorInsId], references: [id]) // İlişki Tanımı
 
-  recipientId String
-  recipient   Users  @relation("AnnRecipient", fields: [recipientId], references: [id]) // İlişki Tanım
-
-  recipientInsId String
-  recipientInst  Institutions @relation("AnnRecipientInst", fields: [recipientInsId], references: [id]) // İlişki Tanımı
+  
 }
 
 model Teams {
@@ -534,6 +570,15 @@ enum OfferStatus {
   Onaylandi
   Red
   Beklemede
+}
+
+enum RequestStatus {
+  Aktif
+  Pasif
+  Beklemede
+  Iptal
+  TeklifAlindi
+  Tamamlandi
 }
 
 enum NotificationStatus {

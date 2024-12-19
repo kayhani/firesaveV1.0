@@ -5,7 +5,25 @@ const prisma = new PrismaClient()
 
 async function main() {
   // Önce veritabanını temizle
- 
+  await prisma.user.deleteMany()
+
+  console.log('Veritabanı temizlendi')
+
+  // Admin kullanıcısı oluştur
+  const adminPassword = await hash('1070Frt86', 12)
+  const admin = await prisma.user.create({
+    data: {
+      name: 'Fırat Salmanoğlu',
+      email: 'firatsalmanoglu@gmail.com',
+      password: adminPassword,
+      role: 'ADMIN',
+      
+    }
+  })
+
+  console.log('Admin kullanıcısı oluşturuldu:', admin)
+
+
   const devicetypes = await prisma.deviceTypes.createMany({
     data: [
         {name : "Yangın Tüpü"},
