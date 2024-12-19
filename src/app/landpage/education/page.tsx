@@ -46,7 +46,7 @@ const EducationCard = ({
       {/* Card içeriği */}
       <div className="w-full md:w-1/2 bg-white p-8 rounded-lg shadow-lg">
         <div className="flex items-center gap-4 mb-4">
-          <Shield className="w-8 h-8 text-red-600" />
+          <GraduationCap className="w-8 h-8 text-red-600" />
           <h3 className="text-2xl font-bold text-gray-900">
             {education.title}
           </h3>

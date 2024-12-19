@@ -30,16 +30,11 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Hizmetler</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Yangın Güvenlik Sistemleri
-                </a>
-              </li>
-              <li>
                 <a
                   href="/landpage/education#1"
                   className="text-gray-400 hover:text-white"
                 >
-                  Güvenlik Eğitimleri
+                  Eğitimler
                 </a>
               </li>
               <li>
@@ -47,12 +42,12 @@ export default function Footer() {
                   href="/landpage/analytics#1"
                   className="text-gray-400 hover:text-white"
                 >
-                  Risk Analizi
+                  Yangın Risk Analizi
                 </a>
               </li>
               <li>
                 <a
-                  href="/landpage/concultancy#1"
+                  href="/landpage/consultancy#1"
                   className="text-gray-400 hover:text-white"
                 >
                   Acil Durum Danışmanlığı
@@ -60,59 +55,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Eğitimler</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="/landpage/education#1"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Temel Yangın Güvenliği Eğitimi
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/landpage/education#1"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Yangın Söndürme Eğitimi
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/landpage/education#1"
-                  className="text-gray-400 hover:text-white"
-                >
-                  İleri Seviye Yangın Güvenliği Eğitimi
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/landpage/education#1"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Yangın Tatbikatı Eğitimi
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/landpage/education#1"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Yangın Güvenliği Farkındalık Eğitimi
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/landpage/education#1"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Özel Durumlar için Yangın Güvenliği Eğitimi
-                </a>
-              </li>
-            </ul>
-          </div>
+
           <div>
             <h3 className="text-lg font-semibold mb-4">Kurumsal</h3>
             <ul className="space-y-2">

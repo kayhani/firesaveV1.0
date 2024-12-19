@@ -96,105 +96,134 @@ const Services = () => {
       <Header />
       {/* Services Section */}
       {/* Services Section */}
-      <section id="1" className="p-20">
-        <div className="bg-gray-100 p-6 text-gray-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
-              Hakkımızda
+      <section id="1" className="p-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Ana Başlık ve Giriş */}
+          <div className="mb-12">
+            <h1 className="text-3xl font-bold text-red-600 mb-6">
+              Firesafe Danışmanlık, Eğitim ve Yazılım
             </h1>
-            <p className="text-justify mt-2">
+            <p className="text-gray-600 leading-relaxed mb-6">
               Firesafe Danışmanlık, Eğitim ve Yazılım, yangın güvenliği ve acil
               durum yönetimi alanında uzmanlaşmış, yenilikçi çözümler sunan bir
               firmadır. Kuruluşumuz, işletmelerin ve bireylerin güvenliğini en
               üst düzeyde sağlamak için danışmanlık, eğitim ve teknoloji
               hizmetlerini bir araya getirmektedir.
             </p>
-            <p className="text-justify mt-2">
-              Misyonumuz, yangın ve acil durumlara karşı proaktif bir yaklaşım
-              geliştirerek, can ve mal kayıplarını en aza indirmek ve güvenlik
-              standartlarını yükseltmektir. Bu doğrultuda, dünya standartlarına
-              uygun ürün ve hizmetlerle müşterilerimize etkin ve sürdürülebilir
-              çözümler sunuyoruz.
-            </p>
+          </div>
 
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
+          {/* Misyon */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-red-600 mb-4">
+              Misyonumuz
+            </h2>
+            <p className="text-gray-600 leading-relaxed">
+              Yangın ve acil durumlara karşı proaktif bir yaklaşım geliştirerek,
+              can ve mal kayıplarını en aza indirmek ve güvenlik standartlarını
+              yükseltmektir. Bu doğrultuda, dünya standartlarına uygun ürün ve
+              hizmetlerle müşterilerimize etkin ve sürdürülebilir çözümler
+              sunuyoruz.
+            </p>
+          </div>
+
+          {/* Hizmetlerimiz */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-red-600 mb-4">
               Hizmetlerimiz
             </h2>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>Yangın Güvenliği Danışmanlığı:</strong>
-                İşletmelere özel yangın risk analizi ve yönetimi, yangın
-                güvenlik sistemlerinin tasarımı ve denetimi.
-              </li>
-              <li className="ml-4">
-                <strong>Eğitim Programları:</strong>
-                Yangın önleme ve müdahale eğitimi, acil durum ve tahliye
-                tatbikatları, çalışan farkındalığını artırmaya yönelik
-                sertifikalı eğitimler.
-              </li>
-              <li className="ml-4">
-                <strong>Yazılım Çözümleri:</strong>
-                Yangın güvenlik yönetim sistemleri, acil durum senaryoları için
-                özel yazılım çözümleri, dijital izleme ve raporlama araçları.
-              </li>
-            </ul>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-medium text-red-600 mb-2">
+                  Yangın Güvenliği Danışmanlığı
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  İşletmelere özel yangın risk analizi ve yönetimi, yangın
+                  güvenlik sistemlerinin tasarımı ve denetimi.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-medium text-red-600 mb-2">
+                  Eğitim Programları
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Yangın önleme ve müdahale eğitimi, acil durum ve tahliye
+                  tatbikatları, çalışan farkındalığını artırmaya yönelik
+                  sertifikalı eğitimler.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-medium text-red-600 mb-2">
+                  Yazılım Çözümleri
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Yangın güvenlik yönetim sistemleri, acil durum senaryoları
+                  için özel yazılım çözümleri, dijital izleme ve raporlama
+                  araçları.
+                </p>
+              </div>
+            </div>
+          </div>
 
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
+          {/* Neden Firesafe */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-red-600 mb-4">
               Neden Firesafe?
             </h2>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>Uzman Kadro:</strong> Alanında deneyimli mühendisler,
-                eğitmenler ve yazılım uzmanlarından oluşan bir ekip.
+            <ul className="list-disc list-inside space-y-3 text-gray-600">
+              <li className="leading-relaxed">
+                <span className="font-medium">Uzman Kadro:</span> Alanında
+                deneyimli mühendisler, eğitmenler ve yazılım uzmanlarından
+                oluşan bir ekip.
               </li>
-              <li className="ml-4">
-                <strong>Kapsamlı Çözümler:</strong> Danışmanlık, eğitim ve
-                yazılım entegrasyonu ile 360 derece güvenlik hizmeti.
+              <li className="leading-relaxed">
+                <span className="font-medium">Kapsamlı Çözümler:</span>{" "}
+                Danışmanlık, eğitim ve yazılım entegrasyonu ile 360 derece
+                güvenlik hizmeti.
               </li>
-              <li className="ml-4">
-                <strong>Yenilikçi Yaklaşım:</strong> Teknolojiyi güvenlik
-                çözümlerine entegre eden modern uygulamalar.
+              <li className="leading-relaxed">
+                <span className="font-medium">Yenilikçi Yaklaşım:</span>{" "}
+                Teknolojiyi güvenlik çözümlerine entegre eden modern
+                uygulamalar.
               </li>
-              <li className="ml-4">
-                <strong>Yasal Uyum:</strong> Ulusal ve uluslararası standartlara
-                uygun süreç yönetimi.
+              <li className="leading-relaxed">
+                <span className="font-medium">Yasal Uyum:</span> Ulusal ve
+                uluslararası standartlara uygun süreç yönetimi.
               </li>
             </ul>
+          </div>
 
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
+          {/* Vizyonumuz */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-red-600 mb-4">
               Vizyonumuz
             </h2>
-            <p className="text-justify mt-2">
+            <p className="text-gray-600 leading-relaxed">
               Fire Safe olarak, yangın güvenliği ve acil durum yönetimi alanında
               lider bir marka olmayı hedefliyoruz. Teknoloji ve insan odaklı
               çözümlerimizle, güvenliği bir adım öteye taşımayı ve yaşam
               alanlarını daha güvenli hale getirmeyi amaçlıyoruz.
             </p>
+          </div>
 
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
+          {/* Değerlerimiz */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-red-600 mb-4">
               Değerlerimiz
             </h2>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>Güvenilirlik:</strong> Her projede müşterilerimize güven
-                veren sonuçlar sunarız.
+            <ul className="list-disc list-inside space-y-3 text-gray-600">
+              <li className="leading-relaxed">
+                <span className="font-medium">Güvenilirlik:</span> Her projede
+                müşterilerimize güven veren sonuçlar sunarız.
               </li>
-              <li className="ml-4">
-                <strong>Sürdürülebilirlik:</strong> Uzun vadeli çözümlerle çevre
-                ve toplum için değer yaratırız.
+              <li className="leading-relaxed">
+                <span className="font-medium">Sürdürülebilirlik:</span> Uzun
+                vadeli çözümlerle çevre ve toplum için değer yaratırız.
               </li>
-              <li className="ml-4">
-                <strong>İnovasyon:</strong> Sürekli gelişim ve teknoloji odaklı
-                yaklaşımlarla sektöre yön veririz.
+              <li className="leading-relaxed">
+                <span className="font-medium">İnovasyon:</span> Sürekli gelişim
+                ve teknoloji odaklı yaklaşımlarla sektöre yön veririz.
               </li>
             </ul>
-
-            <h2 className="text-xl font-semibold text-red-600 mt-6">Sonuç</h2>
-            <p className="text-justify mt-2">
-              Firesafe olarak, güvenliği bir öncelik değil, bir yaşam biçimi
-              haline getiriyoruz. Sizin de güvenliğinizi en üst düzeye taşımak
-              için buradayız!
-            </p>
           </div>
         </div>
       </section>

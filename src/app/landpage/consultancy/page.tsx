@@ -1,94 +1,179 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  FlameKindling,
-  Phone,
-  Mail,
-  Shield,
-  GraduationCap,
-  ClipboardCheck,
-  Users,
-  Menu,
-  X,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import React from "react";
+import { Users } from "lucide-react";
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Building2, FileCheck, BadgeCheck, HandshakeIcon } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const Services = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
+interface Subject {
+  d1: string;
+  d2: string;
+  d3?: string;
+}
 
-  const slides = [
-    {
-      image: "/1.jpg",
-      title: "Yangın Güvenliğinde Profesyonel Çözümler",
-      description: "İşletmeniz için eksiksiz yangın güvenlik sistemleri",
-      buttonText: "Hemen Başlayın",
-    },
-    {
-      image: "/2.jpg",
-      title: "Uzman Eğitim Kadrosu",
-      description: "Teorik ve uygulamalı yangın güvenlik eğitimleri",
-      buttonText: "Eğitimleri İncele",
-    },
-    {
-      image: "/3.jpg",
-      title: "7/24 Teknik Destek",
-      description: "Acil durumlarınızda yanınızdayız",
-      buttonText: "Bize Ulaşın",
-    },
-  ];
+interface Consultancy {
+  title: string;
+  description: string;
+  subjects: Subject;
+  icon: any;
+  slogan: string;
+}
 
-  const services = [
+const ConsultancyCard = ({
+  consultancy,
+  index,
+}: {
+  consultancy: Consultancy;
+  index: number;
+}) => {
+  const isEven = index % 2 === 0;
+
+  return (
+    <div className="flex flex-col md:flex-row items-center gap-8 mb-16">
+      {/* Çift sayılı kartlarda resim solda */}
+      {isEven && (
+        <div className="w-full md:w-1/2">
+          <Image
+            src={`/education-${index + 1}.jpg`}
+            alt={consultancy.title}
+            width={500}
+            height={300}
+            className="rounded-lg shadow-md object-cover h-[300px]"
+          />
+        </div>
+      )}
+
+      {/* Kart içeriği */}
+      <div className="w-full md:w-1/2 bg-white p-8 rounded-lg shadow-lg">
+        <div className="flex items-center gap-4 mb-4">
+          <Users className="w-8 h-8 text-red-600" />
+          <h3 className="text-2xl font-bold text-gray-900">
+            {consultancy.title}
+          </h3>
+        </div>
+
+        <div className="space-y-4">
+          <p className="text-gray-600">{consultancy.description}</p>
+
+          <div className="mt-6">
+            <h4 className="font-semibold mb-3">Danışmanlık konuları</h4>
+            <ul className="space-y-3">
+              {Object.values(consultancy.subjects || {}).map((subject, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center text-xs text-red-600 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <span className="text-gray-600">{subject}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-6">
+            <span className="inline-block bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+              {consultancy.slogan}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Tek sayılı kartlarda resim sağda */}
+      {!isEven && (
+        <div className="w-full md:w-1/2">
+          <Image
+            src={`/education-${index + 1}.jpg`}
+            alt={consultancy.title}
+            width={500}
+            height={300}
+            className="rounded-lg shadow-md object-cover h-[300px]"
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ConsultancyPage = () => {
+  const consultan = [
+    //-----1------
     {
-      title: "Yangın Güvenlik Sistemleri",
+      title: "Risk Analizi ve Değerlendirme",
       description:
-        "Modern yangın algılama ve söndürme sistemleri kurulumu ve bakımı",
-      icon: Shield,
-    },
-    {
-      title: "Güvenlik Eğitimleri",
-      description:
-        "Profesyonel eğitmenler eşliğinde teorik ve uygulamalı eğitimler",
-      icon: GraduationCap,
-    },
-    {
-      title: "Risk Analizi",
-      description: "Detaylı risk değerlendirmesi ve güvenlik planlaması",
-      icon: ClipboardCheck,
-    },
-    {
-      title: "Acil Durum Danışmanlığı",
-      description: "Acil durum ve tahliye planları oluşturma",
+        "Kuruluşun faaliyet alanına uygun potansiyel risklerin belirlenmesi için yapılan değerlendirme süreci.",
+      subjects: {
+        d1: "İlgili yer ve alanın belirlenmesi.",
+        d2: "Risk seviyelerine göre önceliklendirme.",
+      },
       icon: Users,
+      slogan: "Riskleri Belirle, Hazırlığını Sağla!",
+    },
+    //-----2------
+    {
+      title: "Acil Durum Planlarının Hazırlanması",
+      description:
+        "Kriz durumlarında etkin bir yanıt için planların detaylandırılması.",
+      subjects: {
+        d1: "Tahliye planları.",
+        d2: "Kriz yönetimi prosedürleri.",
+        d3: "İletişim stratejileri ve alternatif çalışma yöntemleri.",
+      },
+      icon: Users,
+      slogan: "Planla, Krize Hazır Ol!",
+    },
+    //-----3------
+    {
+      title: "Eğitim ve Farkındalık Çalışmaları",
+      description:
+        "Çalışanların acil durumlara karşı hazırlıklı olmasını sağlamak amacıyla verilen eğitimler.",
+      subjects: {
+        d1: "Düzenli acil durum eğitimleri.",
+        d2: "Tatbikatlarla uygulamalı eğitim programları.",
+        d3: "Kriz sırasında psikolojik dayanıklılığı artırıcı içerikler.",
+      },
+      icon: Users,
+      slogan: "Eğit, Bilinçlendir, Koruma Sağla!",
+    },
+    //-------4-------
+    {
+      title: "Acil Durum Yönetim Sistemi Kurulumu",
+      description: "Erken müdahale için gerekli sistemlerin entegre edilmesi.",
+      subjects: {
+        d1: "Erken uyarı sistemlerinin entegrasyonu.",
+        d2: "Acil müdahale ekiplerinin organizasyonu.",
+        d3: "Teknolojik altyapının güçlendirilmesi.",
+      },
+      icon: Users,
+      slogan: "Güçlü Bir Sistem Kur, Etkili Müdahale Sağla!",
+    },
+    //----------5--------
+    {
+      title: "İzleme ve Geliştirme",
+      description:
+        "Hazırlanan acil durum planlarının sürekli olarak gözden geçirilmesi ve geliştirilmesi.",
+      subjects: {
+        d1: "Planların düzenli aralıklarla test edilmesi.",
+        d2: "Güncel yasal gerekliliklere uyum sağlanması.",
+        d3: "Yeni tehdit ve risklere uygun güncellemeler.",
+      },
+      icon: Users,
+      slogan: "İzle, Geliştir, Güvenliği Artır!",
+    },
+    //----------6--------
+    {
+      title: "Hedef Kitle",
+      description:
+        "Kimlerin Acil Durum Danışmanlığı alması gerektiğini belirtir.",
+      subjects: {
+        d1: "İşletmeler ve fabrikalar için kaza önleme ve yangın risk yönetimi.",
+        d2: "Okullar ve hastaneler için güvenlik sağlama.",
+        d3: "Kamu kurumları ve şirketler için siber tehditlere karşı planlama.",
+      },
+      icon: Users,
+      slogan: "Herkes İçin Güvenlik, Herkes İçin Danışmanlık!",
     },
   ];
-
-  // Otomatik slider geçişi
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 5000); // Her 5 saniyede bir değişim
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -96,170 +181,25 @@ const Services = () => {
       <Header />
       {/* Services Section */}
       {/* Services Section */}
-      <div className="py-20 bg-gray-50">
+      <section id="1" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Hizmetlerimiz</h2>
-            <p className="mt-4 text-gray-500">
-              Güvenliğiniz için kapsamlı çözümler sunuyoruz
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Danışmanlık Hizmetlerimiz
+            </h2>
+            <p className="text-xl text-gray-600">
+              Detaylı ve profesyonel danışmanlık hizmetleri sunuyoruz
             </p>
           </div>
-          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {services.map((service, index) => (
-              <div
+
+          <div className="space-y-16">
+            {consultan.map((consultancy, index) => (
+              <ConsultancyCard
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <service.icon className="w-12 h-12 text-red-600 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {service.title}
-                </h3>
-                <p className="mt-2 text-gray-500">{service.description}</p>
-              </div>
+                consultancy={consultancy}
+                index={index}
+              />
             ))}
-          </div>
-        </div>
-      </div>
-      <section id="1" className="p-20">
-        <div className="bg-gray-100 p-6 text-gray-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
-              Acil Durum Danışmanlığı
-            </h1>
-            <p className="text-justify mt-2">
-              Acil Durum Danışmanlığı, kuruluşların ve bireylerin beklenmeyen
-              olaylar karşısında hazırlıklı olmalarını, bu tür durumlarda etkin
-              ve hızlı bir şekilde hareket etmelerini sağlayan profesyonel bir
-              hizmettir. Bu danışmanlık, doğal afetler, endüstriyel kazalar,
-              yangın, salgın hastalıklar, siber saldırılar ve diğer kriz
-              senaryoları gibi durumlara yönelik planlama, eğitim ve uygulama
-              süreçlerini içerir.
-            </p>
-
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
-              Acil Durum Danışmanlığının Kapsamı
-            </h2>
-            <p className="text-justify mt-2">
-              Acil durum danışmanlığı hizmeti genellikle aşağıdaki konuları
-              kapsar:
-            </p>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              1. Risk Analizi ve Değerlendirme
-            </h3>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                Kuruluşun faaliyet alanına uygun potansiyel risklerin
-                belirlenmesi
-              </li>
-              <li className="ml-4">
-                Olası tehlikelerin etkilerinin analiz edilmesi
-              </li>
-              <li className="ml-4">Risk seviyelerine göre önceliklendirme</li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              2. Acil Durum Planlarının Hazırlanması
-            </h3>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">Tahliye planları</li>
-              <li className="ml-4">Kriz yönetimi prosedürleri</li>
-              <li className="ml-4">İletişim stratejileri</li>
-              <li className="ml-4">Alternatif çalışma yöntemleri</li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              3. Eğitim ve Farkındalık Çalışmaları
-            </h3>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                Çalışanlar için düzenli acil durum eğitimleri
-              </li>
-              <li className="ml-4">
-                Tatbikatlarla uygulamalı eğitim programları
-              </li>
-              <li className="ml-4">
-                Kriz sırasında psikolojik dayanıklılığı artırıcı içerikler
-              </li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              4. Acil Durum Yönetim Sistemi Kurulumu
-            </h3>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">Erken uyarı sistemlerinin entegrasyonu</li>
-              <li className="ml-4">Acil müdahale ekiplerinin organizasyonu</li>
-              <li className="ml-4">Teknolojik altyapının güçlendirilmesi</li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              5. İzleme ve Geliştirme
-            </h3>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                Planların düzenli aralıklarla test edilmesi ve iyileştirilmesi
-              </li>
-              <li className="ml-4">
-                Güncel yasal gerekliliklere uyum sağlanması
-              </li>
-              <li className="ml-4">
-                Yeni tehdit ve risklere uygun güncellemeler
-              </li>
-            </ul>
-
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
-              Acil Durum Danışmanlığının Faydaları
-            </h2>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>Hızlı Müdahale Yeteneği:</strong> Kriz anında kayıpların
-                en aza indirilmesi sağlanır.
-              </li>
-              <li className="ml-4">
-                <strong>Hukuki Uyum:</strong> İş sağlığı ve güvenliği
-                yönetmeliklerine uygun planlama yapılır.
-              </li>
-              <li className="ml-4">
-                <strong>Reputasyonun Korunması:</strong> Kurumsal itibarın
-                korunmasına katkı sağlar.
-              </li>
-              <li className="ml-4">
-                <strong>Finansal Güvenlik:</strong> Doğru yönetimle mali
-                kayıpların önüne geçilir.
-              </li>
-              <li className="ml-4">
-                <strong>Çalışan Güvenliği:</strong> Personelin güvenliğini
-                sağlayarak motivasyonu artırır.
-              </li>
-            </ul>
-
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
-              Kimler Acil Durum Danışmanlığı Almalı?
-            </h2>
-            <p className="text-justify mt-2">
-              Acil Durum Danışmanlığı, farklı sektörlerdeki kurumlar için kritik
-              öneme sahiptir. Aşağıdaki kurumlar ve işletmeler acil durum
-              danışmanlığı hizmeti almalıdır:
-            </p>
-
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>İşletmeler ve Fabrikalar:</strong> Üretim süreçlerinde
-                kazaların önlenmesi ve yangın risklerinin yönetimi için.
-              </li>
-              <li className="ml-4">
-                <strong>Okullar ve Hastaneler:</strong> Öğrenci, hasta ve
-                çalışanların güvenliği için.
-              </li>
-              <li className="ml-4">
-                <strong>Kamu Kurumları:</strong> Afet durumlarına karşı
-                vatandaşların güvenliğini sağlamak amacıyla.
-              </li>
-              <li className="ml-4">
-                <strong>Küçük ve Büyük Ölçekli Şirketler:</strong> Siber
-                tehditlere karşı iş sürekliliği planlarının oluşturulması için.
-              </li>
-            </ul>
           </div>
         </div>
       </section>
@@ -269,4 +209,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default ConsultancyPage;

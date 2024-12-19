@@ -1,94 +1,175 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  FlameKindling,
-  Phone,
-  Mail,
-  Shield,
-  GraduationCap,
-  ClipboardCheck,
-  Users,
-  Menu,
-  X,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import React from "react";
+import { ClipboardCheck } from "lucide-react";
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Building2, FileCheck, BadgeCheck, HandshakeIcon } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const Services = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
+interface Subject {
+  d1: string;
+  d2: string;
+  d3?: string;
+}
 
-  const slides = [
-    {
-      image: "/1.jpg",
-      title: "Yangın Güvenliğinde Profesyonel Çözümler",
-      description: "İşletmeniz için eksiksiz yangın güvenlik sistemleri",
-      buttonText: "Hemen Başlayın",
-    },
-    {
-      image: "/2.jpg",
-      title: "Uzman Eğitim Kadrosu",
-      description: "Teorik ve uygulamalı yangın güvenlik eğitimleri",
-      buttonText: "Eğitimleri İncele",
-    },
-    {
-      image: "/3.jpg",
-      title: "7/24 Teknik Destek",
-      description: "Acil durumlarınızda yanınızdayız",
-      buttonText: "Bize Ulaşın",
-    },
-  ];
+interface Analysis {
+  title: string;
+  description: string;
+  subjects: Subject;
+  icon: any;
+  slogan: string;
+}
 
-  const services = [
+const AnalysisCard = ({
+  analysis,
+  index,
+}: {
+  analysis: Analysis;
+  index: number;
+}) => {
+  const isEven = index % 2 === 0;
+
+  return (
+    <div className="flex flex-col md:flex-row items-center gap-8 mb-16">
+      {/* Çift sayılı kartlarda resim solda */}
+      {isEven && (
+        <div className="w-full md:w-1/2">
+          <Image
+            src={`/education-${index + 1}.jpg`}
+            alt={analysis.title}
+            width={500}
+            height={300}
+            className="rounded-lg shadow-md object-cover h-[300px]"
+          />
+        </div>
+      )}
+
+      {/* Kart içeriği */}
+      <div className="w-full md:w-1/2 bg-white p-8 rounded-lg shadow-lg">
+        <div className="flex items-center gap-4 mb-4">
+          <ClipboardCheck className="w-8 h-8 text-red-600" />
+          <h3 className="text-2xl font-bold text-gray-900">{analysis.title}</h3>
+        </div>
+
+        <div className="space-y-4">
+          <p className="text-gray-600">{analysis.description}</p>
+
+          <div className="mt-6">
+            <h4 className="font-semibold mb-3">Analiz Adımları</h4>
+            <ul className="space-y-3">
+              {Object.values(analysis.subjects || {}).map((subject, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-5 h-5 bg-red-100 rounded-full flex items-center justify-center text-xs text-red-600 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <span className="text-gray-600">{subject}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-6">
+            <span className="inline-block bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+              {analysis.slogan}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Tek sayılı kartlarda resim sağda */}
+      {!isEven && (
+        <div className="w-full md:w-1/2">
+          <Image
+            src={`/education-${index + 1}.jpg`}
+            alt={analysis.title}
+            width={500}
+            height={300}
+            className="rounded-lg shadow-md object-cover h-[300px]"
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const AnalysisPage = () => {
+  const analyses = [
+    //-----1------
     {
-      title: "Yangın Güvenlik Sistemleri",
+      title: "Hazırlık ve Planlama",
       description:
-        "Modern yangın algılama ve söndürme sistemleri kurulumu ve bakımı",
-      icon: Shield,
-    },
-    {
-      title: "Güvenlik Eğitimleri",
-      description:
-        "Profesyonel eğitmenler eşliğinde teorik ve uygulamalı eğitimler",
-      icon: GraduationCap,
-    },
-    {
-      title: "Risk Analizi",
-      description: "Detaylı risk değerlendirmesi ve güvenlik planlaması",
+        "Yangın risk analizine başlamadan önce gerekli hazırlıklar yapılmasi.",
+      subjects: {
+        d1: "İlgili yer ve alanın belirlenmesi.",
+        d2: "Kapsamın tanımlanması; yangın güvenlik önlemleri.",
+        d3: "Tahliye planlari.",
+      },
       icon: ClipboardCheck,
+      slogan: "Planla, Güvenliği Sağla!",
     },
+    //-----2------
     {
-      title: "Acil Durum Danışmanlığı",
-      description: "Acil durum ve tahliye planları oluşturma",
-      icon: Users,
+      title: "Tehlikelerin Belirlenmesi",
+      description:
+        "Yangın riski oluşturabilecek tüm faktörler tespit edilmesi.",
+      subjects: {
+        d1: "Yangın kaynakları (elektrik arızaları, kimyasal maddeler).",
+        d2: "Yanıcı maddeler (kağıt, ahşap, kimyasallar).",
+        d3: "Elektrik tesisatları ve yapısal özellikler.",
+      },
+      icon: ClipboardCheck,
+      slogan: "Tehlikeyi Tanımla, Güvenliği Artır!",
+    },
+    //-----3------
+    {
+      title: "Risk Değerlendirmesi",
+      description: "Belirlenen tehlikelerin risk düzeyleri değerlendirilmesi.",
+      subjects: {
+        d1: "Olasılık: Yangın çıkma olasılığı.",
+        d2: "Etkiler: Yangın çıktığında doğacak olumsuz etkiler (can ve mal kaybı).",
+        d3: "Risk Düzeyi: Olasılık ve etkilerin birleştirilmesiyle hesaplanmasi",
+      },
+      icon: ClipboardCheck,
+      slogan: "Riski Değerlendir, Önlemleri Belirle!",
+    },
+    //-------4-------
+    {
+      title: "Riskin Kontrolü ve Azaltılması",
+      description:
+        "Belirlenen risklerin kontrol altına alınması için önlemler alınmasi.",
+      subjects: {
+        d1: "Yangın öncesi, sırasında ve sonrasında alınacak önlemler.",
+        d2: "Yangına sebep olabilecek maddelerin bakımı. ",
+        d3: "Tahliye planlarının uygulanabilirliği.",
+      },
+      icon: ClipboardCheck,
+      slogan: "Kontrol Sağla, Güvenliği Artır!",
+    },
+    //----------5--------
+    {
+      title: "İzleme ve Gözden Geçirme.",
+      description: "Yangın risk analizi, sürekli olarak gözden geçirilir.",
+      subjects: {
+        d1: "Yeni tehlikelerin belirlenmesi.",
+        d2: "Güvenlik önlemlerinin güncellenmesi.",
+      },
+      icon: ClipboardCheck,
+      slogan: "Sürekli İzle, Güvenliği Yenile!",
+    },
+    //----------6--------
+    {
+      title: "Eğitim ve Tatbikat.",
+      description:
+        "Çalışanlar ve diğer bireyler için yangın eğitimi ve tatbikatları düzenlenir.",
+      subjects: {
+        d1: "Yangın tatbikatlarının planlanması ve uygulanması.",
+        d2: "Yangın güvenliği bilincinin artırılması.",
+      },
+      icon: ClipboardCheck,
+      slogan: "Eğit, Tatbikatla Pekiştir, Güvenliği Sağla!",
     },
   ];
-
-  // Otomatik slider geçişi
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 5000); // Her 5 saniyede bir değişim
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -96,258 +177,21 @@ const Services = () => {
       <Header />
       {/* Services Section */}
       {/* Services Section */}
-      <div className="py-20 bg-gray-50">
+      <section id="1" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Hizmetlerimiz</h2>
-            <p className="mt-4 text-gray-500">
-              Güvenliğiniz için kapsamlı çözümler sunuyoruz
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Yangın Risk Analizi Süreçlerimiz
+            </h2>
+            <p className="text-xl text-gray-600">
+              Detaylı ve profesyonel yangın risk analizi hizmetleri sunuyoruz
             </p>
           </div>
-          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <service.icon className="w-12 h-12 text-red-600 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {service.title}
-                </h3>
-                <p className="mt-2 text-gray-500">{service.description}</p>
-              </div>
+
+          <div className="space-y-16">
+            {analyses.map((analysis, index) => (
+              <AnalysisCard key={index} analysis={analysis} index={index} />
             ))}
-          </div>
-        </div>
-      </div>
-      <section id="1" className="p-20">
-        <div className="bg-gray-100 p-6 text-gray-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
-              Yangın Risk Analizi Nedir?
-            </h1>
-            <p className="text-justify mt-2">
-              Yangın risk analizi, bir ortamda yangın çıkma olasılığını ve bunun
-              olumsuz etkilerini minimize etmek için yapılan sistematik bir
-              değerlendirmedir. Bu analiz, potansiyel yangın tehlikelerini
-              tanımlamak, riskleri değerlendirmek ve bu riskleri azaltacak
-              önlemleri belirlemek amacıyla yapılır. Yangın risk analizi, hem
-              yangın öncesi, hem de yangın anında etkili bir güvenlik planı
-              oluşturulmasına yardımcı olur.
-            </p>
-            <p className="text-justify mt-2">
-              Yangın risk analizi, yasal bir zorunluluk olmasının yanı sıra, iş
-              yerlerinde, okullarda, hastanelerde, fabrikalarda ve diğer birçok
-              alanda güvenliği artırmak için kritik bir adımdır. Ayrıca,
-              çalışanların, müşterilerin ve diğer bireylerin güvenliğini
-              sağlamak, mülk kaybını önlemek ve yangının yayılma hızını
-              yavaşlatmak amacıyla yapılır.
-            </p>
-
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
-              Yangın Risk Analizinin Amaçları
-            </h2>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>Yangın tehlikelerinin belirlenmesi:</strong> Yangın
-                çıkabilecek yerlerin ve koşulların tespit edilmesi.
-              </li>
-              <li className="ml-4">
-                <strong>Riskin büyüklüğünün değerlendirilmesi:</strong> Yangının
-                meydana geldiğinde yaratacağı tehlikelerin ve hasarın boyutunun
-                analiz edilmesi.
-              </li>
-              <li className="ml-4">
-                <strong>Yangın güvenlik önlemlerinin geliştirilmesi:</strong>{" "}
-                Yangının çıkmasını engelleyecek veya etkilerini azaltacak
-                önlemlerin tasarlanması.
-              </li>
-              <li className="ml-4">
-                <strong>
-                  Yangın tatbikatları ve eğitim ihtiyaçlarının belirlenmesi:
-                </strong>{" "}
-                Çalışanların, öğrencilerin ve diğer bireylerin yangına karşı
-                eğitim almasını sağlamak.
-              </li>
-            </ul>
-
-            <h2 className="text-xl font-semibold text-red-600 mt-6">
-              Yangın Risk Analizi Nasıl Yapılır?
-            </h2>
-            <p className="text-justify mt-2">
-              Yangın risk analizi, genellikle birkaç temel adımda
-              gerçekleştirilir. Bu adımlar aşağıdaki gibi sıralanabilir:
-            </p>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              1. Hazırlık ve Planlama
-            </h3>
-            <p className="text-justify mt-2">
-              Yangın risk analizine başlamadan önce, tüm sürecin planlanması
-              gereklidir. Bu aşamada aşağıdaki unsurlar göz önünde bulundurulur:
-            </p>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                İlgili Yer ve Alanın Belirlenmesi: Yangın risk analizi yapılacak
-                bina veya tesisin sınırları çizilir.
-              </li>
-              <li className="ml-4">
-                Kapsamın Tanımlanması: Risk analizi sadece yangın tehlikeleri
-                ile sınırlı kalmamalıdır. Ayrıca yangın güvenlik önlemleri,
-                yangın söndürücüler, alarm sistemleri, tahliye planları gibi
-                alanlar da kapsanmalıdır.
-              </li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              2. Tehlikelerin Belirlenmesi
-            </h3>
-            <p className="text-justify mt-2">
-              Yangın çıkma olasılığını artırabilecek tüm faktörler belirlenir.
-              Bu adımda şunlar göz önünde bulundurulmalıdır:
-            </p>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                Yangın Kaynakları: Elektrik arızaları, ısınma sistemleri,
-                kimyasal maddeler, açık alevler gibi unsurlar.
-              </li>
-              <li className="ml-4">
-                Yanıcı Maddeler: Kağıt, plastik, ahşap, kimyasal maddeler gibi
-                yanıcı malzemeler.
-              </li>
-              <li className="ml-4">
-                Elektrik Tesisatları ve Cihazlar: Kısa devre, eski tesisatlar
-                gibi elektrikli ekipmanlar.
-              </li>
-              <li className="ml-4">
-                Yapısal Özellikler: Bina yapısının yangına dayanıklılığı, yangın
-                çıkış yolları gibi yapısal faktörler.
-              </li>
-              <li className="ml-4">
-                Yangına Müdahale Ekipmanları: Yangın söndürücüler, sprink
-                sistemleri, yangın alarmı gibi müdahale araçlarının yeterliliği.
-              </li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              3. Risk Değerlendirmesi
-            </h3>
-            <p className="text-justify mt-2">
-              Tehlikeler belirlendikten sonra, bu tehlikelerin oluşturabileceği
-              riskler değerlendirilir. Bu değerlendirme, her bir tehlikenin
-              olasılık ve etkisinin hesaplanmasını içerir.
-            </p>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>Olasılık:</strong> Yangın çıkma olasılığı.
-              </li>
-              <li className="ml-4">
-                <strong>Etkiler:</strong> Yangın çıktığında doğacak olumsuz
-                etkiler (can kaybı, malzeme kaybı vb.).
-              </li>
-              <li className="ml-4">
-                <strong>Risk Düzeyi:</strong> Olasılık ve etki dikkate alınarak,
-                her bir tehlikenin risk seviyesi belirlenir.
-              </li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              4. Riskin Kontrolü ve Azaltılması
-            </h3>
-            <p className="text-justify mt-2">
-              Risk analizinin en kritik aşaması, belirlenen riskleri kontrol
-              altına almak ve azaltmaktır. Bu aşamada alınması gereken önlemler
-              belirlenir:
-            </p>
-
-            <h4 className="text-md font-semibold text-red-600 mt-6">
-              Yangın Öncesi Önlemler:
-            </h4>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                Yangına sebep olabilecek maddelerin düzenli bakımlarının
-                yapılması.
-              </li>
-              <li className="ml-4">
-                Elektrik tesisatlarının uygun şekilde tasarlanması ve
-                denetlenmesi.
-              </li>
-              <li className="ml-4">
-                Yanıcı maddelerin güvenli bir şekilde depolanması.
-              </li>
-              <li className="ml-4">
-                Çalışanların yangın eğitimi ve tatbikatlarının düzenlenmesi.
-              </li>
-              <li className="ml-4">
-                Bina içindeki yangın çıkış yollarının açık tutulması.
-              </li>
-            </ul>
-
-            <h4 className="text-md font-semibold text-red-600 mt-6">
-              Yangın Sırasında Alınacak Önlemler:
-            </h4>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                Acil durum tahliye planlarının uygulanabilir hale getirilmesi.
-              </li>
-              <li className="ml-4">
-                Yangın söndürme cihazlarının kolay erişilebilir olması.
-              </li>
-            </ul>
-
-            <h4 className="text-md font-semibold text-red-600 mt-6">
-              Yangın Sonrası Önlemler:
-            </h4>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                Yangın sonrası tahliye, kurtarma ve ilk yardım prosedürlerinin
-                oluşturulması.
-              </li>
-              <li className="ml-4">
-                Yangın sonrası zarar tespitlerinin yapılması ve iyileştirilme
-                sürecinin başlatılması.
-              </li>
-            </ul>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              5. İzleme ve Gözden Geçirme
-            </h3>
-            <p className="text-justify mt-2">
-              Yangın risk analizi, sürekli olarak gözden geçirilmelidir. Yeni
-              tehlikeler ortaya çıktıkça güvenlik önlemleri güncellenmeli ve
-              iyileştirilmelidir.
-            </p>
-
-            <h3 className="text-lg font-semibold text-red-600 mt-6">
-              Yangın Risk Analizi Yöntemleri
-            </h3>
-            <p className="text-justify mt-2">
-              Yangın risk analizi yapılırken farklı yöntemler kullanılabilir.
-              Yaygın kullanılan bazı yöntemler şunlardır:
-            </p>
-            <ul className="list-disc list-inside mt-2">
-              <li className="ml-4">
-                <strong>Kuantitatif Yöntem:</strong> Riskin matematiksel olarak
-                hesaplandığı yöntem.
-              </li>
-              <li className="ml-4">
-                <strong>Kalitatif Yöntem:</strong> Riskin nitel bir şekilde
-                değerlendirildiği yöntem.
-              </li>
-              <li className="ml-4">
-                <strong>Hibrit Yöntem:</strong> Hem nicel hem de nitel
-                bilgilerin birleşimi ile yapılan değerlendirme.
-              </li>
-            </ul>
-
-            <h2 className="text-xl font-semibold text-red-600 mt-6">Sonuç</h2>
-            <p className="text-justify mt-2">
-              Yangın risk analizi, bir işletmenin, okulun, hastanenin veya
-              herhangi bir diğer yapının yangın tehlikelerine karşı daha güvenli
-              hale gelmesi için temel bir adımdır. Bu süreç, yalnızca yasal bir
-              zorunluluk değil, aynı zamanda can ve mal güvenliğini korumak için
-              önemli bir araçtır.
-            </p>
           </div>
         </div>
       </section>
@@ -357,4 +201,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default AnalysisPage;

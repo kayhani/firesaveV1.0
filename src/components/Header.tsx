@@ -178,26 +178,26 @@ export default function Header() {
                 Hizmetler
               </a>
               <a
-                href="/landpage/educations/#1"
+                href="/landpage/education/#1"
                 className="block px-3 py-2 text-gray-700 hover:text-red-600"
               >
                 Eğitimler
               </a>
               <a
                 href="/landpage/analytics#1"
-                className="text-gray-700 hover:text-red-600"
+                className="block px-3 py-2 text-gray-700 hover:text-red-600"
               >
                 Analizler
               </a>
               <a
                 href="/landpage/consultancy#1"
-                className="text-gray-700 hover:text-red-600"
+                className="block px-3 py-2 text-gray-700 hover:text-red-600"
               >
                 Danismanlik
               </a>
               <a
                 href="/landpage/about#1"
-                className="text-gray-700 hover:text-red-600"
+                className="block px-3 py-2 text-gray-700 hover:text-red-600"
               >
                 Hakkimizda
               </a>
